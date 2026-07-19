@@ -18,7 +18,7 @@ export const SITE_CONFIG = Object.freeze({
     discord: 'https://discord.gg/6s9AHDfYtc',
     whatsapp: 'https://chat.whatsapp.com/DOanNeEoZaVDAmbBiCnwOP',
     support: 'https://forms.gle/5ZScmM3qAmNoPHEX6',
-    map: 'http://enx-cirion-57.enx.host:10005/#',
+    map: 'http://enx-cirion-79.enx.host:10045/',
     email: 'craf.tolkieniano@gmail.com',
     instagram: 'https://www.instagram.com/tolkien.craft/',
     x: 'https://x.com/tkcraft_',
