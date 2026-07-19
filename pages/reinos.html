@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base="../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c120d">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles/reset.css">
+  <link rel="stylesheet" href="../styles/tokens.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/layout.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/pages.css">
+  <link rel="stylesheet" href="../styles/responsive.css">
+  <title>Raças e reinos | TolkienCraft</title>
+  <meta name="description" content="Conheça as raças, reinos, lideranças e regiões disponíveis no servidor TolkienCraft.">
+</head>
+<body data-page="reinos">
+  <header class="site-header" data-site-header></header>
+  <main id="conteudo">
+    <section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../index.html">Início</a><span aria-hidden="true">/</span><span>Reinos</span></nav><p class="eyebrow">Povos de Beleriand</p><h1>Raças e reinos</h1><p>Escolha entre anões, hobbits, humanos e elfos. Comece como jogador livre e conquiste sua cidadania dentro de uma comunidade.</p></div></section>
+    <section class="section section--compact"><div class="container split"><div><h2>De livre a cidadão</h2><ol class="feature-list"><li>Encontre um representante do reino desejado.</li><li>Converse sobre regras, tradições e necessidades da comunidade.</li><li>Receba o reconhecimento oficial da liderança.</li></ol></div><figure class="feature-image"><img src="../assets/images/racas.jpg" alt="Quatro personagens representando anão, hobbit, humano e elfo" width="640" height="494"></figure></div></section>
+    <section class="section section--surface"><div class="container"><div class="section-heading"><div><p class="eyebrow">Territórios</p><h2>Reinos disponíveis</h2></div><p>Use os filtros para localizar reinos por raça ou situação de recrutamento.</p></div>
+      <div class="filter-bar" aria-label="Filtrar reinos"><button class="filter-button" type="button" data-filter="all" aria-pressed="true">Todos</button><button class="filter-button" type="button" data-filter="elfos" aria-pressed="false">Elfos</button><button class="filter-button" type="button" data-filter="humanos" aria-pressed="false">Humanos</button><button class="filter-button" type="button" data-filter="anoes" aria-pressed="false">Anões</button><button class="filter-button" type="button" data-filter="hobbits" aria-pressed="false">Hobbits</button><button class="filter-button" type="button" data-filter="recruiting" aria-pressed="false">Recrutando</button></div>
+      <p class="filter-result" data-filter-result role="status" aria-live="polite"></p><div class="kingdom-grid" data-kingdom-grid></div>
+    </div></section>
+  </main>
+  <footer class="footer" data-site-footer></footer>
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>
