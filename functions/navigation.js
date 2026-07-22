@@ -41,14 +41,10 @@ export function mountLayout() {
         </button>
         <nav id="site-nav" class="site-nav" aria-label="Navegação principal">
           <ul>${navMarkup}</ul>
-<<<<<<< HEAD
           <div class="site-nav__actions">
             <a class="button button--small" href="${link(base, 'pages/como-jogar.html')}">Jogar agora</a>
             <a class="button button--small admin-access-button" href="${link(base, 'adm/login')}">Login administrativo</a>
           </div>
-=======
-          <a class="button button--small" href="${link(base, 'pages/como-jogar.html')}">Jogar agora</a>
->>>>>>> b7fd263d62bc71e1045bb61d461b02928a56dbef
         </nav>
       </div>`;
   }
@@ -78,10 +74,7 @@ export function mountLayout() {
             <li><a href="${SITE_CONFIG.community.discord}" target="_blank" rel="noopener noreferrer">Discord</a></li>
             <li><a href="${SITE_CONFIG.community.whatsapp}" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
             <li><a href="mailto:${SITE_CONFIG.community.email}">${SITE_CONFIG.community.email}</a></li>
-<<<<<<< HEAD
             <li><a href="${link(base, 'adm/login')}">Administração</a></li>
-=======
->>>>>>> b7fd263d62bc71e1045bb61d461b02928a56dbef
           </ul>
         </div>
       </div>
