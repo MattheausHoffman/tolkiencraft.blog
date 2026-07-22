@@ -1,8 +1,11 @@
 import bcrypt from 'bcrypt';
 import mysql from 'mysql2/promise';
 import { env } from '../config/environment.js';
+<<<<<<< HEAD
 import { SEED_PUBLICATIONS } from '../data/seed-publications.js';
 import { SEED_KINGDOMS } from '../data/seed-kingdoms.js';
+=======
+>>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 
 function quoteIdentifier(identifier) {
   if (!/^[a-zA-Z0-9_]+$/.test(identifier)) {
@@ -12,6 +15,7 @@ function quoteIdentifier(identifier) {
   return `\`${identifier}\``;
 }
 
+<<<<<<< HEAD
 async function createTables(connection) {
   await connection.query(`
     CREATE TABLE IF NOT EXISTS admins (
@@ -246,6 +250,8 @@ async function seedKingdoms(connection) {
   }
 }
 
+=======
+>>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 export async function bootstrapDatabase() {
   const connection = await mysql.createConnection({
     host: env.database.host,
@@ -257,14 +263,61 @@ export async function bootstrapDatabase() {
 
   try {
     const databaseName = quoteIdentifier(env.database.name);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
     await connection.query(
       `CREATE DATABASE IF NOT EXISTS ${databaseName} CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci`
     );
     await connection.changeUser({ database: env.database.name });
+<<<<<<< HEAD
     await createTables(connection);
     const adminId = await seedAdmin(connection);
     await seedPublications(connection, adminId);
     await seedKingdoms(connection);
+=======
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS admins (
+        id INT NOT NULL AUTO_INCREMENT,
+        nome VARCHAR(100) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        senha VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        UNIQUE KEY uq_admins_email (email)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS sessions (
+        session_id VARCHAR(128) COLLATE utf8mb4_bin NOT NULL,
+        expires INT UNSIGNED NOT NULL,
+        data MEDIUMTEXT COLLATE utf8mb4_bin,
+        PRIMARY KEY (session_id)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+    `);
+
+    const [existingAdmins] = await connection.execute(
+      'SELECT id FROM admins WHERE id = ? OR email = ? LIMIT 1',
+      [env.defaultAdmin.id, env.defaultAdmin.email]
+    );
+
+    if (existingAdmins.length === 0) {
+      const passwordHash = await bcrypt.hash(
+        env.defaultAdmin.password,
+        env.security.bcryptRounds
+      );
+
+      await connection.execute(
+        'INSERT INTO admins (id, nome, email, senha) VALUES (?, ?, ?, ?)',
+        [env.defaultAdmin.id, env.defaultAdmin.name, env.defaultAdmin.email, passwordHash]
+      );
+
+      console.info('Administrador padrão criado com hash bcrypt.');
+    }
+>>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
   } finally {
     await connection.end();
   }

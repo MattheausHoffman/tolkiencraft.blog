@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS sessions (
   PRIMARY KEY (session_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS publications (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(180) NOT NULL,
@@ -93,3 +94,15 @@ CREATE TABLE IF NOT EXISTS reinos (
   INDEX idx_reinos_status_order (status, ordem_exibicao, nome),
   INDEX idx_reinos_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+=======
+INSERT INTO admins (id, nome, email, senha)
+VALUES (
+  1,
+  'ADMIN',
+  'Mattheaus.hoffman@gmail.com',
+  '$2b$12$tDtK89VER86/J84OmoRwWuvumcYfEDW2GlXGjvsfP.wMS93WJTRRy'
+)
+ON DUPLICATE KEY UPDATE
+  nome = VALUES(nome),
+  email = VALUES(email);
+>>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e

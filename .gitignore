@@ -1,5 +1,6 @@
 node_modules/
 .env
+<<<<<<< HEAD
 .env.local
 .env.production
 npm-debug.log*
@@ -10,3 +11,8 @@ assets/uploads/images/*
 assets/uploads/files/*
 !assets/uploads/images/.gitkeep
 !assets/uploads/files/.gitkeep
+=======
+npm-debug.log*
+.DS_Store
+coverage/
+>>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e

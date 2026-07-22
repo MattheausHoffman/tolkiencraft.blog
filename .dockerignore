@@ -4,7 +4,10 @@ npm-debug.log*
 .gitignore
 .env
 coverage
+<<<<<<< HEAD
 assets/uploads/images/*
 assets/uploads/files/*
 !assets/uploads/images/.gitkeep
 !assets/uploads/files/.gitkeep
+=======
+>>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
