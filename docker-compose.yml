@@ -1,0 +1,66 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: local-root-password
+      MYSQL_DATABASE: admin_system
+      MYSQL_USER: tolkiencraft
+      MYSQL_PASSWORD: local-app-password
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+    volumes:
+      - tolkiencraft_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      SITE_URL: http://localhost:3000
+      TRUST_PROXY: 0
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: tolkiencraft
+      DB_PASSWORD: local-app-password
+      DB_NAME: admin_system
+      DB_CONNECTION_LIMIT: 10
+      SESSION_SECRET: local-development-session-secret-change-in-production-2026
+      SESSION_MAX_AGE_MS: 28800000
+      SESSION_COOKIE_SECURE: "false"
+      BCRYPT_ROUNDS: 12
+      DEFAULT_ADMIN_NAME: ADMIN
+      DEFAULT_ADMIN_EMAIL: Mattheaus.hoffman@gmail.com
+      DEFAULT_ADMIN_PASSWORD: "Matth)19052005"
+    volumes:
+      - tolkiencraft_uploads:/app/assets/uploads
+    ports:
+      - "3000:3000"
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.2-apache
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_VERBOSE: TolkienCraft MySQL
+    ports:
+      - "127.0.0.1:8080:80"
+
+volumes:
+  tolkiencraft_mysql_data:
+  tolkiencraft_uploads:

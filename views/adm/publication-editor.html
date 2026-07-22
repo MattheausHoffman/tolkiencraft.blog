@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base="/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c120d">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/pages.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/responsive.css">
+  <title>Editor de Publicação | TolkienCraft</title>
+</head>
+<body data-page="admin-publication-editor" class="admin-page">
+  <header class="site-header" data-site-header></header>
+  <main id="conteudo" class="admin-main">
+    <form class="container publication-editor" data-publication-editor novalidate>
+      <div class="admin-dashboard__heading publication-editor__heading">
+        <div>
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/adm/dashboard">Painel</a><span aria-hidden="true">/</span><a href="/adm/publicacoes">Publicações</a><span aria-hidden="true">/</span><span data-editor-breadcrumb>Nova</span></nav>
+          <p class="eyebrow">CMS TolkienCraft</p>
+          <h1 data-editor-title>Nova Publicação</h1>
+          <p class="lead">Monte o conteúdo em blocos. Os títulos geram automaticamente as seções numeradas e o índice público.</p>
+        </div>
+        <button class="button button--secondary" type="button" data-logout-button>Sair</button>
+      </div>
+
+      <div class="auth-alert auth-alert--dashboard" data-auth-alert role="alert" aria-live="assertive" hidden></div>
+
+      <div class="publication-editor__layout">
+        <div class="publication-editor__main">
+          <section class="admin-form-panel" aria-labelledby="publication-data-title">
+            <div class="admin-form-panel__header"><div><p class="eyebrow">Identificação</p><h2 id="publication-data-title">Dados da publicação</h2></div></div>
+            <div class="admin-form-grid">
+              <div class="form-field form-field--wide"><label for="title">Título</label><input id="title" name="title" maxlength="180" required><span class="field-error" data-field-error="title"></span></div>
+              <div class="form-field form-field--wide"><label for="slug">Slug</label><div class="slug-field"><span>/publicacoes/</span><input id="slug" name="slug" maxlength="190" aria-describedby="slug-help"></div><small id="slug-help">Gerado automaticamente, mas pode ser ajustado.</small></div>
+              <div class="form-field form-field--wide"><label for="summary">Resumo</label><textarea id="summary" name="summary" rows="4" maxlength="500" required></textarea><span class="field-error" data-field-error="summary"></span></div>
+              <div class="form-field"><label for="author">Autor</label><input id="author" name="author" maxlength="100"></div>
+              <div class="form-field"><label for="displayOrder">Ordem de exibição</label><input id="displayOrder" name="displayOrder" type="number" value="0" min="-100000" max="100000"></div>
+              <div class="form-field"><label for="status">Status</label><select id="status" name="status"><option value="draft">Rascunho</option><option value="published">Publicado</option></select></div>
+            </div>
+          </section>
+
+          <section class="admin-form-panel" aria-labelledby="cover-title">
+            <div class="admin-form-panel__header"><div><p class="eyebrow">Apresentação</p><h2 id="cover-title">Imagem de capa</h2></div></div>
+            <div class="admin-form-grid">
+              <div class="form-field form-field--wide"><label for="coverImageUrl">URL da imagem</label><div class="input-with-action"><input id="coverImageUrl" name="coverImageUrl" maxlength="500"><button class="button button--small button--secondary" type="button" data-cover-upload>Enviar imagem</button></div></div>
+              <div class="form-field form-field--wide"><label for="coverImageAlt">Texto alternativo (ALT)</label><input id="coverImageAlt" name="coverImageAlt" maxlength="255"></div>
+              <figure class="cover-preview" data-cover-preview hidden><img src="" alt=""></figure>
+            </div>
+          </section>
+
+          <section class="admin-form-panel block-builder" aria-labelledby="blocks-title">
+            <div class="admin-form-panel__header block-builder__header">
+              <div><p class="eyebrow">Conteúdo estruturado</p><h2 id="blocks-title">Blocos da publicação</h2></div>
+              <span data-block-count>0 blocos</span>
+            </div>
+            <div class="block-add-bar">
+              <label for="block-type">Adicionar bloco</label>
+              <select id="block-type" data-block-type></select>
+              <button class="button button--small" type="button" data-add-block>Adicionar</button>
+            </div>
+            <div class="block-list" data-block-list>
+              <p class="empty-state">Adicione o primeiro bloco da publicação.</p>
+            </div>
+          </section>
+
+          <details class="admin-form-panel seo-panel">
+            <summary><span><span class="eyebrow">Otimização</span><strong>SEO e compartilhamento</strong></span><span aria-hidden="true">+</span></summary>
+            <div class="admin-form-grid seo-panel__content">
+              <div class="form-field form-field--wide"><label for="seoTitle">SEO Title</label><input id="seoTitle" name="seoTitle" maxlength="180"></div>
+              <div class="form-field form-field--wide"><label for="metaDescription">Meta Description</label><textarea id="metaDescription" name="metaDescription" rows="3" maxlength="320"></textarea></div>
+              <div class="form-field form-field--wide"><label for="metaKeywords">Meta Keywords</label><input id="metaKeywords" name="metaKeywords" maxlength="500" placeholder="palavra, outra palavra"></div>
+              <div class="form-field form-field--wide"><label for="ogTitle">Open Graph Title</label><input id="ogTitle" name="ogTitle" maxlength="180"></div>
+              <div class="form-field form-field--wide"><label for="ogDescription">Open Graph Description</label><textarea id="ogDescription" name="ogDescription" rows="3" maxlength="320"></textarea></div>
+              <div class="form-field form-field--wide"><label for="ogImageUrl">Open Graph Image</label><input id="ogImageUrl" name="ogImageUrl" maxlength="500"></div>
+            </div>
+          </details>
+        </div>
+
+        <aside class="publication-editor__sidebar">
+          <div class="editor-actions-card">
+            <p class="eyebrow">Publicação</p>
+            <p data-save-state>As alterações ainda não foram salvas.</p>
+            <button class="button button--secondary" type="submit" data-save-draft>Salvar como rascunho</button>
+            <button class="button" type="submit" data-publish>Publicar agora</button>
+            <a class="button button--ghost" href="/adm/publicacoes">Voltar à lista</a>
+          </div>
+          <div class="editor-guide-card">
+            <strong>Guia automático</strong>
+            <ol data-editor-guide><li>Nenhum título adicionado.</li></ol>
+          </div>
+        </aside>
+      </div>
+    </form>
+  </main>
+  <footer class="footer" data-site-footer></footer>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/adm/cms/publication-editor.js"></script>
+</body>
+</html>

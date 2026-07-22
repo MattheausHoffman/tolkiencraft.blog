@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.local
+.env.production
+npm-debug.log*
+.DS_Store
+coverage/
+.vscode/
+assets/uploads/images/*
+assets/uploads/files/*
+!assets/uploads/images/.gitkeep
+!assets/uploads/files/.gitkeep

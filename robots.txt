@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /adm/
+Disallow: /api/
+Allow: /
+
+Sitemap: https://seudominio.com/sitemap.xml
