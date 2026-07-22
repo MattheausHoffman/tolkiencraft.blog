@@ -1,0 +1,27 @@
+{
+  "name": "tolkiencraft.blog",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Portal TolkienCraft com autenticação administrativa em Node.js, Express e MySQL.",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "db:init": "node database/init.js",
+    "check": "node scripts/check-project.js"
+  },
+  "dependencies": {
+    "bcrypt": "6.0.0",
+    "dotenv": "17.4.2",
+    "express": "5.2.1",
+    "express-mysql-session": "3.0.3",
+    "express-rate-limit": "8.6.0",
+    "express-session": "1.19.0",
+    "helmet": "8.3.0",
+    "mysql2": "3.23.1"
+  }
+}
