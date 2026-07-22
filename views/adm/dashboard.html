@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base="/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c120d">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/pages.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/responsive.css">
+  <title>Painel Administrativo | TolkienCraft</title>
+</head>
+<body data-page="admin-dashboard" class="admin-page">
+  <header class="site-header" data-site-header></header>
+
+  <main id="conteudo" class="admin-main">
+    <section class="container admin-dashboard" aria-labelledby="dashboard-title">
+      <div class="admin-dashboard__heading">
+        <div>
+          <p class="eyebrow">Área protegida</p>
+          <h1 id="dashboard-title">Painel Administrativo</h1>
+          <p class="lead">Login realizado com sucesso.</p>
+        </div>
+        <button class="button button--secondary" type="button" data-logout-button>Sair</button>
+      </div>
+
+      <article class="admin-profile" aria-label="Administrador autenticado">
+        <span class="admin-profile__avatar" aria-hidden="true">A</span>
+        <div>
+          <p class="eyebrow">Sessão ativa</p>
+          <h2 data-admin-name>Administrador</h2>
+          <p data-admin-email></p>
+        </div>
+      </article>
+
+      <section class="admin-module-grid" aria-labelledby="modules-title">
+        <div class="section-heading"><div><p class="eyebrow">Ferramentas</p><h2 id="modules-title">Gerenciamento do site</h2></div></div>
+        <article class="admin-module-card">
+          <span class="admin-module-card__icon" aria-hidden="true">01</span>
+          <div><h3>Publicações</h3><p>Crie, edite, publique, ordene e exclua as publicações exibidas no portal.</p></div>
+          <div class="admin-module-card__actions"><a class="button" href="/adm/publicacoes">Gerenciar Publicações</a><a class="button button--secondary" href="/adm/publicacoes/nova">Nova Publicação</a></div>
+        </article>
+
+        <article class="admin-module-card">
+          <span class="admin-module-card__icon" aria-hidden="true">02</span>
+          <div><h3>Reinos</h3><p>Cadastre, edite, ative, desative e organize os cards de Reinos exibidos no portal.</p></div>
+          <div class="admin-module-card__actions"><a class="button" href="/adm/reinos">Gerenciar Reinos</a><a class="button button--secondary" href="/adm/reinos/novo">Novo Reino</a></div>
+        </article>
+      </section>
+
+      <div class="auth-alert auth-alert--dashboard" data-auth-alert role="alert" aria-live="assertive" hidden></div>
+    </section>
+  </main>
+
+  <footer class="footer" data-site-footer></footer>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/adm/dashboard.js"></script>
+</body>
+</html>

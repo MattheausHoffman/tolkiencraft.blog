@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base="/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c120d">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/pages.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/responsive.css">
+  <title>Editor de Reino | TolkienCraft</title>
+</head>
+<body data-page="admin-kingdom-editor" class="admin-page">
+  <header class="site-header" data-site-header></header>
+  <main id="conteudo" class="admin-main">
+    <form class="container kingdom-editor" data-kingdom-editor novalidate>
+      <div class="admin-dashboard__heading">
+        <div>
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/adm/dashboard">Painel</a><span aria-hidden="true">/</span><a href="/adm/reinos">Reinos</a><span aria-hidden="true">/</span><span data-editor-breadcrumb>Novo</span></nav>
+          <p class="eyebrow">CMS TolkienCraft</p>
+          <h1 data-editor-title>Novo Reino</h1>
+          <p class="lead">Preencha as informações que serão utilizadas diretamente no card público do Reino.</p>
+        </div>
+        <button class="button button--secondary" type="button" data-logout-button>Sair</button>
+      </div>
+
+      <div class="auth-alert auth-alert--dashboard" data-auth-alert role="alert" aria-live="assertive" hidden></div>
+
+      <section class="admin-form-panel" aria-labelledby="kingdom-data-title">
+        <div class="admin-form-panel__header"><div><p class="eyebrow">Identificação</p><h2 id="kingdom-data-title">Dados do Reino</h2></div></div>
+        <div class="admin-form-grid">
+          <div class="form-field form-field--wide">
+            <label for="nome">Nome do Reino</label>
+            <input id="nome" name="nome" maxlength="100" required autocomplete="off">
+            <span class="field-error" data-field-error="nome"></span>
+          </div>
+
+          <div class="form-field form-field--wide">
+            <label for="slug">Slug gerado automaticamente</label>
+            <div class="slug-field"><span>/reinos/</span><input id="slug" name="slug" readonly tabindex="-1" aria-describedby="slug-help"></div>
+            <small id="slug-help">O endereço é gerado a partir do nome e validado como único no servidor.</small>
+          </div>
+
+          <div class="form-field form-field--wide">
+            <label for="imagem">Imagem por URL</label>
+            <div class="input-with-action">
+              <input id="imagem" name="imagem" type="text" inputmode="url" maxlength="1000" placeholder="https://... ou /assets/uploads/images/...">
+              <button class="button button--secondary" type="button" data-upload-trigger>Enviar imagem</button>
+            </div>
+            <input class="sr-only" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" data-upload-input>
+            <small>O upload preenche automaticamente a URL. A imagem é opcional e mantém proporção responsiva.</small>
+            <span class="field-error" data-field-error="imagem"></span>
+          </div>
+
+          <figure class="cover-preview kingdom-image-preview" data-image-preview hidden><img src="" alt="Pré-visualização da imagem do Reino"></figure>
+
+          <div class="form-field">
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+              <option value="active">Ativo</option>
+              <option value="inactive">Inativo</option>
+            </select>
+            <span class="field-error" data-field-error="status"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="ordemExibicao">Ordem de Exibição</label>
+            <input id="ordemExibicao" name="ordemExibicao" type="number" value="0" min="-100000" max="100000" step="1">
+            <span class="field-error" data-field-error="ordemExibicao"></span>
+          </div>
+
+          <div class="form-field form-field--wide">
+            <label for="racas">Raças</label>
+            <input id="racas" name="racas" maxlength="255" required placeholder="Humanos, Elfos, Anões">
+            <small>Informe uma ou várias raças exatamente como deverão aparecer no card.</small>
+            <span class="field-error" data-field-error="racas"></span>
+          </div>
+
+          <div class="form-field form-field--wide">
+            <label for="lideranca">Liderança</label>
+            <input id="lideranca" name="lideranca" maxlength="150" required placeholder="Rei Arthur, Imperatriz Aurora ou Conselho dos Magos">
+            <span class="field-error" data-field-error="lideranca"></span>
+          </div>
+
+          <div class="form-field form-field--wide">
+            <div class="field-label-row"><label for="descricao">Descrição</label><output for="descricao" data-description-counter>0/100</output></div>
+            <textarea id="descricao" name="descricao" maxlength="100" rows="4" required></textarea>
+            <small>A descrição é obrigatória e aceita no máximo 100 caracteres.</small>
+            <span class="field-error" data-field-error="descricao"></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="kingdom-editor__actions">
+        <a class="button button--secondary" href="/adm/reinos">Cancelar</a>
+        <button class="button" type="submit" data-save-button>Salvar Reino</button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer" data-site-footer></footer>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/adm/cms/kingdom-editor.js"></script>
+</body>
+</html>
