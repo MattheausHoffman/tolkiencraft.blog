@@ -198,7 +198,7 @@ function normalizeBlock(block, index) {
 }
 
 
-function validatePublishedBlocks(blocks) {
+export function validatePublishedBlocks(blocks) {
   if (blocks.length === 0) {
     throw new HttpError(400, 'Adicione pelo menos um bloco antes de publicar.');
   }
@@ -259,12 +259,12 @@ function validatePublishedBlocks(blocks) {
   }
 }
 
-function validateBlocks(blocks) {
+export function validateBlocks(blocks, contentLabel = 'publicação') {
   if (!Array.isArray(blocks)) {
-    throw new HttpError(400, 'A estrutura de blocos da publicação é inválida.');
+    throw new HttpError(400, `A estrutura de blocos da ${contentLabel} é inválida.`);
   }
   if (blocks.length > 250) {
-    throw new HttpError(400, 'A publicação excede o limite de 250 blocos.');
+    throw new HttpError(400, `A ${contentLabel} excede o limite de 250 blocos.`);
   }
   return blocks.map(normalizeBlock);
 }

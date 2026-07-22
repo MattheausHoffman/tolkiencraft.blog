@@ -16,12 +16,8 @@ export function bindFilterButtons({ buttonSelector, itemSelector, getValue, onCh
 
     items.forEach((item) => {
       const searchableValue = normalizeFilterValue(getValue(item));
-<<<<<<< HEAD
       const tokenPattern = new RegExp(`(^|\\s)${filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|\\s)`);
       const visible = filter === 'all' || tokenPattern.test(searchableValue);
-=======
-      const visible = filter === 'all' || searchableValue.includes(filter);
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
       item.hidden = !visible;
       item.classList.toggle('is-filtered-out', !visible);
       if (visible) visibleCount += 1;

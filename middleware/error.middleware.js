@@ -1,9 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-<<<<<<< HEAD
 import multer from 'multer';
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -18,7 +15,6 @@ export function notFoundHandler(request, response) {
 export function errorHandler(error, request, response, next) {
   if (response.headersSent) return next(error);
 
-<<<<<<< HEAD
   response.set('Cache-Control', 'no-store');
 
   let status = Number(error.status) || 500;
@@ -51,14 +47,4 @@ export function errorHandler(error, request, response, next) {
   }
 
   return response.status(status).send(status >= 500 ? 'Erro interno do servidor.' : message);
-=======
-  console.error('Erro não tratado:', error);
-  response.set('Cache-Control', 'no-store');
-
-  if (request.originalUrl.startsWith('/api/')) {
-    return response.status(500).json({ message: 'Não foi possível concluir a solicitação.' });
-  }
-
-  return response.status(500).send('Erro interno do servidor.');
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 }

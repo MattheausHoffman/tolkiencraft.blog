@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS sessions (
   PRIMARY KEY (session_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS publications (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(180) NOT NULL,
@@ -94,15 +93,37 @@ CREATE TABLE IF NOT EXISTS reinos (
   INDEX idx_reinos_status_order (status, ordem_exibicao, nome),
   INDEX idx_reinos_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-=======
-INSERT INTO admins (id, nome, email, senha)
-VALUES (
-  1,
-  'ADMIN',
-  'Mattheaus.hoffman@gmail.com',
-  '$2b$12$tDtK89VER86/J84OmoRwWuvumcYfEDW2GlXGjvsfP.wMS93WJTRRy'
-)
-ON DUPLICATE KEY UPDATE
-  nome = VALUES(nome),
-  email = VALUES(email);
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
+
+CREATE TABLE IF NOT EXISTS kingdom_pages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  kingdom_id INT NOT NULL UNIQUE,
+  seo_title VARCHAR(180) NULL,
+  meta_description VARCHAR(320) NULL,
+  meta_keywords VARCHAR(500) NULL,
+  og_title VARCHAR(180) NULL,
+  og_description VARCHAR(320) NULL,
+  og_image_url VARCHAR(500) NULL,
+  updated_by_admin_id INT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_kingdom_pages_kingdom FOREIGN KEY (kingdom_id) REFERENCES reinos(id) ON DELETE CASCADE,
+  CONSTRAINT fk_kingdom_pages_admin FOREIGN KEY (updated_by_admin_id) REFERENCES admins(id) ON DELETE SET NULL,
+  INDEX idx_kingdom_pages_updated_at (updated_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS kingdom_page_blocks (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  kingdom_page_id INT NOT NULL,
+  block_type VARCHAR(40) NOT NULL,
+  position INT NOT NULL DEFAULT 0,
+  block_data JSON NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_kingdom_page_blocks_page FOREIGN KEY (kingdom_page_id) REFERENCES kingdom_pages(id) ON DELETE CASCADE,
+  UNIQUE KEY uq_kingdom_page_block_position (kingdom_page_id, position),
+  INDEX idx_kingdom_page_blocks_type (block_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO kingdom_pages (kingdom_id)
+SELECT id FROM reinos
+ON DUPLICATE KEY UPDATE kingdom_id = VALUES(kingdom_id);

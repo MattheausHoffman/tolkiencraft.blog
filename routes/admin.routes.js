@@ -23,7 +23,6 @@ adminRouter.get('/login', redirectAuthenticatedAdmin, (request, response) => {
 adminRouter.get('/dashboard', requireAdmin, (request, response) => {
   response.sendFile(path.join(viewsDirectory, 'dashboard.html'));
 });
-<<<<<<< HEAD
 adminRouter.get('/publicacoes', requireAdmin, (request, response) => {
   response.sendFile(path.join(viewsDirectory, 'publications.html'));
 });
@@ -40,8 +39,9 @@ adminRouter.get('/reinos', requireAdmin, (request, response) => {
 adminRouter.get('/reinos/novo', requireAdmin, (request, response) => {
   response.sendFile(path.join(viewsDirectory, 'kingdom-editor.html'));
 });
+adminRouter.get('/reinos/:id/pagina', requireAdmin, (request, response) => {
+  response.sendFile(path.join(viewsDirectory, 'kingdom-page-editor.html'));
+});
 adminRouter.get('/reinos/:id/editar', requireAdmin, (request, response) => {
   response.sendFile(path.join(viewsDirectory, 'kingdom-editor.html'));
 });
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e

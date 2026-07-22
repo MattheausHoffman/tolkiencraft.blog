@@ -57,11 +57,7 @@ export function mountLayout() {
             <img src="${link(base, 'assets/icons/favicon.svg')}" width="38" height="38" alt="">
             <span><strong>${SITE_CONFIG.brand.name}</strong><small>${SITE_CONFIG.brand.tagline}</small></span>
           </a>
-<<<<<<< HEAD
           <p class="footer-note">Portal dinâmico em HTML, CSS, JavaScript, Node.js e MySQL. Minecraft é uma marca da Mojang. TolkienCraft é um projeto de fã independente.</p>
-=======
-          <p class="footer-note">Projeto estático em HTML, CSS e JavaScript. Minecraft é uma marca da Mojang. TolkienCraft é um projeto de fã independente.</p>
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
         </div>
         <div>
           <h2 class="footer-title">Explorar</h2>

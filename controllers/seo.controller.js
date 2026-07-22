@@ -1,5 +1,6 @@
 import { env } from '../config/environment.js';
 import { listPublications } from '../models/publication.model.js';
+import { listKingdoms } from '../models/kingdom.model.js';
 
 function escapeXml(value) {
   return String(value || '')
@@ -11,7 +12,10 @@ function escapeXml(value) {
 }
 
 export async function renderSitemap(request, response) {
-  const publications = await listPublications({ includeDrafts: false, limit: 500, sort: 'order_asc' });
+  const [publications, kingdoms] = await Promise.all([
+    listPublications({ includeDrafts: false, limit: 500, sort: 'order_asc' }),
+    listKingdoms({ limit: 500, sort: 'order_asc' })
+  ]);
   const staticPaths = [
     '/', '/pages/como-jogar.html', '/pages/reinos.html', '/pages/mapa.html',
     '/pages/eventos.html', '/pages/publicacoes.html', '/pages/regras.html', '/pages/comunidade.html'
@@ -21,6 +25,10 @@ export async function renderSitemap(request, response) {
     ...publications.map((publication) => ({
       loc: `${env.siteUrl}/publicacoes/${publication.slug}`,
       lastmod: publication.updatedAt ? new Date(publication.updatedAt).toISOString() : null
+    })),
+    ...kingdoms.map((kingdom) => ({
+      loc: `${env.siteUrl}/reinos/${kingdom.slug}`,
+      lastmod: kingdom.updatedAt ? new Date(kingdom.updatedAt).toISOString() : null
     }))
   ];
   const entries = urls.map((url) => `<url><loc>${escapeXml(url.loc)}</loc>${url.lastmod ? `<lastmod>${escapeXml(url.lastmod)}</lastmod>` : ''}</url>`).join('');

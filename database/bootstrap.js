@@ -1,11 +1,8 @@
 import bcrypt from 'bcrypt';
 import mysql from 'mysql2/promise';
 import { env } from '../config/environment.js';
-<<<<<<< HEAD
 import { SEED_PUBLICATIONS } from '../data/seed-publications.js';
 import { SEED_KINGDOMS } from '../data/seed-kingdoms.js';
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 
 function quoteIdentifier(identifier) {
   if (!/^[a-zA-Z0-9_]+$/.test(identifier)) {
@@ -15,7 +12,6 @@ function quoteIdentifier(identifier) {
   return `\`${identifier}\``;
 }
 
-<<<<<<< HEAD
 async function createTables(connection) {
   await connection.query(`
     CREATE TABLE IF NOT EXISTS admins (
@@ -107,6 +103,43 @@ async function createTables(connection) {
       UNIQUE KEY uq_reinos_slug (slug),
       KEY idx_reinos_status_order (status, ordem_exibicao, nome),
       KEY idx_reinos_created_at (created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+  `);
+
+  await connection.query(`
+    CREATE TABLE IF NOT EXISTS kingdom_pages (
+      id INT NOT NULL AUTO_INCREMENT,
+      kingdom_id INT NOT NULL,
+      seo_title VARCHAR(180) NULL,
+      meta_description VARCHAR(320) NULL,
+      meta_keywords VARCHAR(500) NULL,
+      og_title VARCHAR(180) NULL,
+      og_description VARCHAR(320) NULL,
+      og_image_url VARCHAR(500) NULL,
+      updated_by_admin_id INT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY uq_kingdom_pages_kingdom (kingdom_id),
+      KEY idx_kingdom_pages_updated_at (updated_at),
+      CONSTRAINT fk_kingdom_pages_kingdom FOREIGN KEY (kingdom_id) REFERENCES reinos(id) ON DELETE CASCADE,
+      CONSTRAINT fk_kingdom_pages_admin FOREIGN KEY (updated_by_admin_id) REFERENCES admins(id) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+  `);
+
+  await connection.query(`
+    CREATE TABLE IF NOT EXISTS kingdom_page_blocks (
+      id BIGINT NOT NULL AUTO_INCREMENT,
+      kingdom_page_id INT NOT NULL,
+      block_type VARCHAR(40) NOT NULL,
+      position INT NOT NULL DEFAULT 0,
+      block_data JSON NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY uq_kingdom_page_block_position (kingdom_page_id, position),
+      KEY idx_kingdom_page_blocks_type (block_type),
+      CONSTRAINT fk_kingdom_page_blocks_page FOREIGN KEY (kingdom_page_id) REFERENCES kingdom_pages(id) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
   `);
 
@@ -248,10 +281,14 @@ async function seedKingdoms(connection) {
       kingdom.ordemExibicao
     ]);
   }
+
+  await connection.query(`
+    INSERT INTO kingdom_pages (kingdom_id)
+    SELECT id FROM reinos
+    ON DUPLICATE KEY UPDATE kingdom_id = VALUES(kingdom_id)
+  `);
 }
 
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 export async function bootstrapDatabase() {
   const connection = await mysql.createConnection({
     host: env.database.host,
@@ -263,61 +300,14 @@ export async function bootstrapDatabase() {
 
   try {
     const databaseName = quoteIdentifier(env.database.name);
-<<<<<<< HEAD
-=======
-
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
     await connection.query(
       `CREATE DATABASE IF NOT EXISTS ${databaseName} CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci`
     );
     await connection.changeUser({ database: env.database.name });
-<<<<<<< HEAD
     await createTables(connection);
     const adminId = await seedAdmin(connection);
     await seedPublications(connection, adminId);
     await seedKingdoms(connection);
-=======
-
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS admins (
-        id INT NOT NULL AUTO_INCREMENT,
-        nome VARCHAR(100) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        senha VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id),
-        UNIQUE KEY uq_admins_email (email)
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-    `);
-
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS sessions (
-        session_id VARCHAR(128) COLLATE utf8mb4_bin NOT NULL,
-        expires INT UNSIGNED NOT NULL,
-        data MEDIUMTEXT COLLATE utf8mb4_bin,
-        PRIMARY KEY (session_id)
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-    `);
-
-    const [existingAdmins] = await connection.execute(
-      'SELECT id FROM admins WHERE id = ? OR email = ? LIMIT 1',
-      [env.defaultAdmin.id, env.defaultAdmin.email]
-    );
-
-    if (existingAdmins.length === 0) {
-      const passwordHash = await bcrypt.hash(
-        env.defaultAdmin.password,
-        env.security.bcryptRounds
-      );
-
-      await connection.execute(
-        'INSERT INTO admins (id, nome, email, senha) VALUES (?, ?, ?, ?)',
-        [env.defaultAdmin.id, env.defaultAdmin.name, env.defaultAdmin.email, passwordHash]
-      );
-
-      console.info('Administrador padrão criado com hash bcrypt.');
-    }
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
   } finally {
     await connection.end();
   }

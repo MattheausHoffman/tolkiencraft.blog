@@ -3,7 +3,9 @@ import {
   createAdminKingdom,
   deleteAdminKingdom,
   getAdminKingdom,
+  getAdminKingdomPage,
   listAdminKingdoms,
+  updateAdminKingdomPage,
   updateAdminKingdom
 } from '../controllers/kingdom.controller.js';
 import { requireAdmin } from '../middleware/auth.middleware.js';
@@ -13,6 +15,8 @@ export const adminKingdomApiRouter = Router();
 
 adminKingdomApiRouter.use(requireAdmin);
 adminKingdomApiRouter.get('/reinos', listAdminKingdoms);
+adminKingdomApiRouter.get('/reinos/:id/pagina', getAdminKingdomPage);
+adminKingdomApiRouter.put('/reinos/:id/pagina', validateCsrfToken, updateAdminKingdomPage);
 adminKingdomApiRouter.get('/reinos/:id', getAdminKingdom);
 adminKingdomApiRouter.post('/reinos', validateCsrfToken, createAdminKingdom);
 adminKingdomApiRouter.put('/reinos/:id', validateCsrfToken, updateAdminKingdom);

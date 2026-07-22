@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base="/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c120d">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/pages.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/responsive.css">
+  <title>Editor da Página do Reino | TolkienCraft</title>
+</head>
+<body data-page="admin-kingdom-page-editor" class="admin-page">
+  <header class="site-header" data-site-header></header>
+  <main id="conteudo" class="admin-main">
+    <form class="container publication-editor" data-kingdom-page-editor novalidate>
+      <div class="admin-dashboard__heading publication-editor__heading">
+        <div>
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/adm/dashboard">Painel</a><span aria-hidden="true">/</span><a href="/adm/reinos">Reinos</a><span aria-hidden="true">/</span><span>Editar Página</span></nav>
+          <p class="eyebrow">CMS TolkienCraft</p>
+          <h1>Editar Página de <span data-kingdom-name>Reino</span></h1>
+          <p class="lead">Monte o conteúdo em blocos. Os títulos geram automaticamente seções numeradas e o índice público.</p>
+        </div>
+        <button class="button button--secondary" type="button" data-logout-button>Sair</button>
+      </div>
+
+      <div class="auth-alert auth-alert--dashboard" data-auth-alert role="alert" aria-live="assertive" hidden></div>
+
+      <div class="publication-editor__layout">
+        <div class="publication-editor__main">
+          <section class="admin-form-panel kingdom-page-source" aria-labelledby="kingdom-source-title">
+            <div class="admin-form-panel__header"><div><p class="eyebrow">Dados sincronizados</p><h2 id="kingdom-source-title">Informações do Reino</h2></div><a class="admin-action-link" href="/adm/reinos" data-edit-kingdom>Alterar cadastro</a></div>
+            <p>Estes dados vêm do cadastro do Reino e não são editados nesta página.</p>
+            <figure class="cover-preview kingdom-page-source__banner" data-kingdom-banner hidden><img src="" alt=""></figure>
+            <dl class="kingdom-page-source__facts">
+              <div><dt>Endereço</dt><dd data-kingdom-slug></dd></div>
+              <div><dt>Status</dt><dd data-kingdom-status></dd></div>
+              <div><dt>Liderança</dt><dd data-kingdom-leader></dd></div>
+              <div><dt>Raças</dt><dd data-kingdom-races></dd></div>
+              <div class="kingdom-page-source__wide"><dt>Descrição curta</dt><dd data-kingdom-description></dd></div>
+            </dl>
+          </section>
+
+          <section class="admin-form-panel block-builder" aria-labelledby="kingdom-blocks-title">
+            <div class="admin-form-panel__header block-builder__header">
+              <div><p class="eyebrow">Conteúdo estruturado</p><h2 id="kingdom-blocks-title">Blocos da página</h2></div>
+              <span data-block-count>0 blocos</span>
+            </div>
+            <div class="block-add-bar">
+              <label for="kingdom-block-type">Adicionar bloco</label>
+              <select id="kingdom-block-type" data-block-type></select>
+              <button class="button button--small" type="button" data-add-block>Adicionar</button>
+            </div>
+            <div class="block-list" data-block-list><p class="empty-state">Adicione o primeiro bloco da página do Reino.</p></div>
+          </section>
+
+          <details class="admin-form-panel seo-panel">
+            <summary><span><span class="eyebrow">Otimização</span><strong>SEO e compartilhamento</strong></span><span aria-hidden="true">+</span></summary>
+            <div class="admin-form-grid seo-panel__content">
+              <div class="form-field form-field--wide"><label for="seoTitle">SEO Title</label><input id="seoTitle" name="seoTitle" maxlength="180" placeholder="Por padrão, usa o nome do Reino"></div>
+              <div class="form-field form-field--wide"><label for="metaDescription">Meta Description</label><textarea id="metaDescription" name="metaDescription" rows="3" maxlength="320" placeholder="Por padrão, usa a descrição curta"></textarea></div>
+              <div class="form-field form-field--wide"><label for="metaKeywords">Meta Keywords</label><input id="metaKeywords" name="metaKeywords" maxlength="500" placeholder="palavra, outra palavra"></div>
+              <div class="form-field form-field--wide"><label for="ogTitle">Open Graph Title</label><input id="ogTitle" name="ogTitle" maxlength="180" placeholder="Por padrão, usa o nome do Reino"></div>
+              <div class="form-field form-field--wide"><label for="ogDescription">Open Graph Description</label><textarea id="ogDescription" name="ogDescription" rows="3" maxlength="320" placeholder="Por padrão, usa a descrição curta"></textarea></div>
+              <div class="form-field form-field--wide"><label for="ogImageUrl">Open Graph Image</label><input id="ogImageUrl" name="ogImageUrl" maxlength="500" placeholder="Por padrão, usa o banner do Reino"></div>
+            </div>
+          </details>
+        </div>
+
+        <aside class="publication-editor__sidebar">
+          <div class="editor-actions-card">
+            <p class="eyebrow">Página do Reino</p>
+            <p data-save-state>Carregando página...</p>
+            <button class="button" type="submit" data-save-page>Salvar página</button>
+            <a class="button button--secondary" href="#" target="_blank" rel="noopener" data-view-page>Visualizar página</a>
+            <a class="button button--ghost" href="/adm/reinos">Voltar aos Reinos</a>
+          </div>
+          <div class="editor-guide-card">
+            <strong>Índice automático</strong>
+            <ol data-editor-guide><li>Nenhum título adicionado.</li></ol>
+          </div>
+        </aside>
+      </div>
+    </form>
+  </main>
+  <footer class="footer" data-site-footer></footer>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/adm/cms/kingdom-page-editor.js"></script>
+</body>
+</html>

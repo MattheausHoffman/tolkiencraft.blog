@@ -6,16 +6,12 @@ import { env } from './config/environment.js';
 import { createSessionMiddleware } from './config/session.js';
 import { adminRouter } from './routes/admin.routes.js';
 import { authRouter } from './routes/auth.routes.js';
-<<<<<<< HEAD
 import { publicationRouter } from './routes/publication.routes.js';
 import { adminPublicationApiRouter } from './routes/admin-publication-api.routes.js';
 import { adminKingdomApiRouter } from './routes/admin-kingdom-api.routes.js';
 import { kingdomRouter } from './routes/kingdom.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
 import { renderRobots, renderSitemap } from './controllers/seo.controller.js';
-=======
-import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 
@@ -44,18 +40,11 @@ export function createApp() {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
         styleSrc: ["'self'"],
-<<<<<<< HEAD
         imgSrc: ["'self'", 'data:', 'https:'],
         connectSrc: ["'self'"],
         fontSrc: ["'self'"],
         objectSrc: ["'none'"],
         frameSrc: ["'self'", 'https://www.youtube.com', 'https://player.vimeo.com'],
-=======
-        imgSrc: ["'self'", 'data:'],
-        connectSrc: ["'self'"],
-        fontSrc: ["'self'"],
-        objectSrc: ["'none'"],
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
         baseUri: ["'self'"],
         formAction: ["'self'"],
         frameAncestors: ["'none'"],
@@ -65,7 +54,6 @@ export function createApp() {
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
   }));
 
-<<<<<<< HEAD
   app.use(express.json({ limit: '2mb', strict: true }));
   app.use(express.urlencoded({ extended: false, limit: '250kb' }));
   app.use(createSessionMiddleware());
@@ -76,14 +64,6 @@ export function createApp() {
   app.use('/adm', adminRouter);
   app.use(publicationRouter);
   app.use(kingdomRouter);
-=======
-  app.use(express.json({ limit: '10kb', strict: true }));
-  app.use(express.urlencoded({ extended: false, limit: '10kb' }));
-  app.use(createSessionMiddleware());
-
-  app.use('/api/auth', authRouter);
-  app.use('/adm', adminRouter);
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 
   app.use('/assets', express.static(path.join(currentDirectory, 'assets'), staticOptions({ immutable: true, maxAge: '7d' })));
   app.use('/styles', express.static(path.join(currentDirectory, 'styles'), staticOptions({ maxAge: '1d' })));
@@ -95,13 +75,8 @@ export function createApp() {
   app.get(['/', '/index.html'], (request, response) => {
     response.sendFile(path.join(currentDirectory, 'index.html'));
   });
-<<<<<<< HEAD
   app.get('/robots.txt', renderRobots);
   app.get('/sitemap.xml', renderSitemap);
-=======
-  app.get('/robots.txt', (request, response) => response.sendFile(path.join(currentDirectory, 'robots.txt')));
-  app.get('/sitemap.xml', (request, response) => response.sendFile(path.join(currentDirectory, 'sitemap.xml')));
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
   app.get('/README.md', (request, response) => response.sendFile(path.join(currentDirectory, 'README.md')));
   app.get('/health', (request, response) => response.json({ status: 'ok' }));
 

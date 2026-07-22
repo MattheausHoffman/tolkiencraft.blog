@@ -28,10 +28,7 @@ services:
     environment:
       NODE_ENV: development
       PORT: 3000
-<<<<<<< HEAD
       SITE_URL: http://localhost:3000
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
       TRUST_PROXY: 0
       DB_HOST: mysql
       DB_PORT: 3306
@@ -46,11 +43,8 @@ services:
       DEFAULT_ADMIN_NAME: ADMIN
       DEFAULT_ADMIN_EMAIL: Mattheaus.hoffman@gmail.com
       DEFAULT_ADMIN_PASSWORD: "Matth)19052005"
-<<<<<<< HEAD
     volumes:
       - tolkiencraft_uploads:/app/assets/uploads
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
     ports:
       - "3000:3000"
 
@@ -68,9 +62,5 @@ services:
       - "127.0.0.1:8080:80"
 
 volumes:
-<<<<<<< HEAD
   tolkiencraft_mysql_data:
   tolkiencraft_uploads:
-=======
-  tolkiencraft_mysql_data:
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e

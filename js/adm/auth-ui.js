@@ -1,10 +1,6 @@
 let alertTimers = [];
 
-<<<<<<< HEAD
 export function showTimedAlert(element, message, duration = 3000, variant = 'error') {
-=======
-export function showTimedAlert(element, message, duration = 3000) {
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
   if (!element) return;
 
   alertTimers.forEach((timer) => window.clearTimeout(timer));
@@ -12,10 +8,7 @@ export function showTimedAlert(element, message, duration = 3000) {
 
   element.hidden = false;
   element.textContent = message;
-<<<<<<< HEAD
   element.dataset.variant = variant;
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
   element.classList.remove('is-visible', 'is-leaving');
 
   window.requestAnimationFrame(() => {
@@ -31,10 +24,7 @@ export function showTimedAlert(element, message, duration = 3000) {
     element.hidden = true;
     element.textContent = '';
     element.classList.remove('is-visible', 'is-leaving');
-<<<<<<< HEAD
     delete element.dataset.variant;
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
   }, duration));
 }
 

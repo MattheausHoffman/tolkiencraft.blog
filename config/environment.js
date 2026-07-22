@@ -29,10 +29,7 @@ export const env = Object.freeze({
   nodeEnv,
   isProduction,
   port: integerFromEnv('PORT', 3000, { min: 1, max: 65535 }),
-<<<<<<< HEAD
   siteUrl: (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, ''),
-=======
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
   trustProxy: integerFromEnv('TRUST_PROXY', 0, { min: 0, max: 10 }),
   database: Object.freeze({
     host: process.env.DB_HOST || '127.0.0.1',

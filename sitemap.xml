@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<<<<<<< HEAD
   <url><loc>http://localhost:3000/</loc></url>
   <url><loc>http://localhost:3000/pages/como-jogar.html</loc></url>
   <url><loc>http://localhost:3000/pages/reinos.html</loc></url>
@@ -13,16 +12,4 @@
   <url><loc>http://localhost:3000/publicacoes/sistema-de-terrenos-do-servidor</loc></url>
   <url><loc>http://localhost:3000/publicacoes/calendario-de-eventos-da-primeira-era</loc></url>
   <url><loc>http://localhost:3000/publicacoes/regras-gerais-do-servidor</loc></url>
-=======
-  <url><loc>https://seudominio.com/index.html</loc></url>
-  <url><loc>https://seudominio.com/pages/como-jogar.html</loc></url>
-  <url><loc>https://seudominio.com/pages/reinos.html</loc></url>
-  <url><loc>https://seudominio.com/pages/mapa.html</loc></url>
-  <url><loc>https://seudominio.com/pages/eventos.html</loc></url>
-  <url><loc>https://seudominio.com/pages/publicacoes.html</loc></url>
-  <url><loc>https://seudominio.com/pages/posts/codigo-guerra.html</loc></url>
-  <url><loc>https://seudominio.com/pages/posts/sistema-terrenos.html</loc></url>
-  <url><loc>https://seudominio.com/pages/regras.html</loc></url>
-  <url><loc>https://seudominio.com/pages/comunidade.html</loc></url>
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 </urlset>

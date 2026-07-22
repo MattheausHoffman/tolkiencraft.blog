@@ -32,6 +32,8 @@ function kingdomRow(kingdom) {
       <td data-label="Ações">
         <div class="admin-row-actions">
           <a class="admin-action-link" href="/adm/reinos/${kingdom.id}/editar">Editar</a>
+          <a class="admin-action-link" href="/adm/reinos/${kingdom.id}/pagina">Editar Página</a>
+          <a class="admin-action-link" href="/reinos/${escapeHtml(kingdom.slug)}" target="_blank" rel="noopener">Visualizar</a>
           <button class="admin-action-link admin-action-link--danger" type="button" data-delete-id="${kingdom.id}" data-delete-title="${escapeHtml(kingdom.nome)}">Excluir</button>
         </div>
       </td>

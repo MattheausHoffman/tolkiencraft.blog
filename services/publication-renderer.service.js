@@ -34,7 +34,7 @@ function renderList(items, ordered = false) {
   return `<${tag}>${items.map((item) => `<li>${item}</li>`).join('')}</${tag}>`;
 }
 
-function renderBlock(block) {
+export function renderBlock(block) {
   const data = block.data || {};
   switch (block.type) {
     case 'subtitle':
@@ -84,7 +84,7 @@ function renderBlock(block) {
   }
 }
 
-function buildSections(blocks) {
+export function buildSections(blocks) {
   const preface = [];
   const sections = [];
   let current = null;

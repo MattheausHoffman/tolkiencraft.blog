@@ -109,21 +109,32 @@ export async function kingdomSlugExists(slug, excludeId = null) {
 }
 
 export async function createKingdomRecord(kingdom) {
-  const [result] = await databasePool.execute(`
-    INSERT INTO reinos (
-      nome, slug, imagem, status, racas, lideranca, descricao, ordem_exibicao
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `, [
-    kingdom.nome,
-    kingdom.slug,
-    kingdom.imagem || null,
-    kingdom.status,
-    kingdom.racas,
-    kingdom.lideranca,
-    kingdom.descricao,
-    kingdom.ordemExibicao
-  ]);
-  return getKingdomById(result.insertId);
+  const connection = await databasePool.getConnection();
+  try {
+    await connection.beginTransaction();
+    const [result] = await connection.execute(`
+      INSERT INTO reinos (
+        nome, slug, imagem, status, racas, lideranca, descricao, ordem_exibicao
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      kingdom.nome,
+      kingdom.slug,
+      kingdom.imagem || null,
+      kingdom.status,
+      kingdom.racas,
+      kingdom.lideranca,
+      kingdom.descricao,
+      kingdom.ordemExibicao
+    ]);
+    await connection.execute('INSERT INTO kingdom_pages (kingdom_id) VALUES (?)', [result.insertId]);
+    await connection.commit();
+    return getKingdomById(result.insertId);
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
 }
 
 export async function updateKingdomRecord(id, kingdom) {

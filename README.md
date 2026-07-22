@@ -1,6 +1,5 @@
 # TolkienCraft.blog
 
-<<<<<<< HEAD
 Portal TolkienCraft desenvolvido em HTML5, CSS3 e JavaScript modular, com back-end Node.js/Express, autenticação administrativa, MySQL e CMS completo de publicações.
 
 ## Recursos principais
@@ -122,6 +121,9 @@ O banco `admin_system` e as tabelas são criados automaticamente na inicializaç
 - `sessions`: sessões autenticadas.
 - `publications`: metadados, status, SEO, ordem e navegação das publicações.
 - `publication_blocks`: blocos estruturados vinculados às publicações.
+- `reinos`: cadastro e dados canônicos dos Reinos.
+- `kingdom_pages`: SEO e auditoria da página individual, em relação 1:1 com o Reino.
+- `kingdom_page_blocks`: blocos estruturados vinculados à página do Reino.
 - `media_files`: arquivos enviados pelo painel.
 
 As publicações existentes no projeto são migradas automaticamente como dados iniciais na primeira execução:
@@ -236,78 +238,11 @@ docker compose down
 ```
 
 Para apagar completamente banco e uploads locais:
-=======
-Portal em HTML5, CSS3 e JavaScript ES Modules, integrado a um back-end Node.js com Express e MySQL para autenticação exclusiva de administradores.
-
-## Recursos preservados
-
-- Página inicial, publicações, reinos, mapa, eventos, regras e comunidade.
-- CSS modular e responsivo.
-- Filtros de reinos, accordions, modal do mapa, cópia do IP e status do servidor.
-- Mesma identidade visual e os mesmos componentes do projeto anterior.
-
-## Autenticação administrativa
-
-- Login exclusivo, sem cadastro e sem recuperação de senha.
-- Rota pública: `/adm/login`.
-- Rota protegida: `/adm/dashboard`.
-- Sessão persistida em MySQL com cookie `HttpOnly` e `SameSite=Strict`.
-- Hash bcrypt com custo configurável.
-- Consultas parametrizadas por `mysql2`.
-- Proteção contra fixação de sessão, CSRF e tentativas repetidas de login.
-- Logout com destruição da sessão e remoção do cookie.
-- Páginas administrativas com `noindex`, cache desativado e proteção no servidor.
-
-## Estrutura
-
-```text
-tolkiencraft.blog/
-├── app.js
-├── server.js
-├── package.json
-├── docker-compose.yml
-├── Dockerfile
-├── config/
-├── database/
-├── models/
-├── services/
-├── controllers/
-├── middleware/
-├── routes/
-├── utils/
-├── views/adm/
-├── index.html
-├── pages/
-├── styles/
-├── js/
-├── functions/
-├── data/
-└── assets/
-```
-
-## Execução completa com Docker
-
-O modo mais simples inicializa a aplicação e o MySQL já configurados:
-
-```bash
-docker compose up --build
-```
-
-Acesse:
-
-- Site: `http://localhost:3000`
-- Login administrativo: `http://localhost:3000/adm/login`
-
-O banco `admin_system`, as tabelas `admins` e `sessions` e o administrador padrão são criados automaticamente na primeira execução. A senha é convertida para bcrypt no servidor antes da inserção.
-
-Para zerar completamente o banco local do Docker:
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
 
 ```bash
 docker compose down -v
 ```
 
-<<<<<<< HEAD
 Atenção: o segundo comando remove todos os dados persistidos do ambiente local.
 
 ## Execução sem Docker
@@ -345,47 +280,25 @@ Antes da implantação:
 
 ## CMS de Reinos
 
-O Painel Administrativo possui um módulo protegido em `/adm/reinos` para criar, editar, excluir, ativar, desativar e ordenar Reinos. A página pública `/pages/reinos.html` consome exclusivamente a API `/api/reinos`; o antigo arquivo de dados mockados foi removido.
+O Painel Administrativo possui um módulo protegido em `/adm/reinos` para criar, editar, excluir, ativar, desativar e ordenar Reinos. A página pública `/pages/reinos.html` consome exclusivamente a API `/api/reinos`; cada card abre a página individual do Reino em `/reinos/:slug`.
 
-A tabela `reinos` armazena nome e slug únicos, imagem opcional, status `active` ou `inactive`, raças, liderança, descrição limitada a 100 caracteres, ordem de exibição e datas de auditoria. Os registros iniciais são carregados de forma idempotente por `data/seed-kingdoms.js`.
+A tabela `reinos` continua como fonte única para nome, slug, imagem, status, raças, liderança, descrição e ordem de exibição. `kingdom_pages` mantém uma relação 1:1 com o Reino e armazena somente SEO e auditoria; `kingdom_page_blocks` guarda os blocos ordenados. A inicialização cria automaticamente uma página para cada Reino existente ou recém-criado.
+
+O editor de página reutiliza os tipos de bloco, sanitização, upload e renderização do CMS de Publicações. Blocos do tipo Título geram o índice, âncoras e numeração automaticamente. A navegação anterior/próximo segue `ordem_exibicao`.
 
 Rotas administrativas protegidas:
 
 - `/adm/reinos`
 - `/adm/reinos/novo`
 - `/adm/reinos/:id/editar`
+- `/adm/reinos/:id/pagina`
 - `/api/admin/reinos`
+- `GET /api/admin/reinos/:id/pagina`
+- `PUT /api/admin/reinos/:id/pagina`
 
 Rotas públicas:
 
 - `/api/reinos`
 - `/api/reinos/:slug`
-- `/reinos/:slug` (redireciona para o card correspondente na página pública)
-=======
-## Execução com MySQL já instalado
-
-1. Use Node.js 22 ou superior e MySQL 8.4 ou compatível.
-2. Copie `.env.example` para `.env` e ajuste as credenciais do MySQL.
-3. Instale as dependências e execute:
-
-```bash
-npm install
-npm run db:init
-npm start
-```
-
-O comando `npm run db:init` é idempotente. Também é executado automaticamente no início da aplicação.
-
-## Segurança para produção
-
-- Troque imediatamente `SESSION_SECRET`, senhas do MySQL e a credencial administrativa padrão.
-- Publique apenas por HTTPS.
-- Use `NODE_ENV=production` e `SESSION_COOKIE_SECURE=true`.
-- Não versione o arquivo `.env`.
-- Mantenha as dependências atualizadas e execute auditorias periódicas com `npm audit`.
-- Restrinja o usuário do MySQL ao banco `admin_system`.
-
-## Banco de dados
-
-O arquivo `database/schema.sql` contém a estrutura completa e uma inserção alternativa do administrador com senha já convertida para bcrypt. A inicialização normal utiliza `database/bootstrap.js`, que gera um hash novo e seguro na primeira execução.
->>>>>>> 980f02e005ec0054436948c190aa1947f401cb2e
+- `/api/reinos/:slug/pagina`
+- `/reinos/:slug`
