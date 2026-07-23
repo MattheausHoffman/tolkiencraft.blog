@@ -42,8 +42,7 @@ export function mountLayout() {
         <nav id="site-nav" class="site-nav" aria-label="Navegação principal">
           <ul>${navMarkup}</ul>
           <div class="site-nav__actions">
-            <a class="button button--small" href="${link(base, 'pages/como-jogar.html')}">Jogar agora</a>
-            <a class="button button--small admin-access-button" href="${link(base, 'adm/login')}">Login administrativo</a>
+            <a class="button button--small admin-access-button" href="${link(base, 'adm/login')}">Login</a>
           </div>
         </nav>
       </div>`;
