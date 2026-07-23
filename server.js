@@ -2,12 +2,17 @@ import { createApp } from './app.js';
 import { env } from './config/environment.js';
 import { bootstrapDatabase } from './database/bootstrap.js';
 import { databasePool, verifyDatabaseConnection } from './database/connection.js';
+import {
+  startEventMaintenance,
+  stopEventMaintenance
+} from './services/event-maintenance.service.js';
 
 let server;
 
 async function startServer() {
   await bootstrapDatabase();
   await verifyDatabaseConnection();
+  await startEventMaintenance();
 
   const app = createApp();
   server = app.listen(env.port, () => {
@@ -17,6 +22,7 @@ async function startServer() {
 
 async function shutdown(signal) {
   console.info(`${signal} recebido. Encerrando aplicação...`);
+  stopEventMaintenance();
 
   if (server) {
     await new Promise((resolve, reject) => {

@@ -19,6 +19,11 @@ CREATE TABLE IF NOT EXISTS sessions (
   PRIMARY KEY (session_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+CREATE TABLE IF NOT EXISTS app_migrations (
+  migration_key VARCHAR(190) NOT NULL PRIMARY KEY,
+  executed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE IF NOT EXISTS publications (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(180) NOT NULL,
@@ -92,6 +97,25 @@ CREATE TABLE IF NOT EXISTS reinos (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_reinos_status_order (status, ordem_exibicao, nome),
   INDEX idx_reinos_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS eventos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(150) NOT NULL,
+  descricao VARCHAR(25) NOT NULL DEFAULT '',
+  mes TINYINT UNSIGNED NOT NULL,
+  dia_inicial TINYINT UNSIGNED NULL,
+  dia_final TINYINT UNSIGNED NULL,
+  ano SMALLINT UNSIGNED NOT NULL,
+  ordem_exibicao INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT chk_eventos_mes CHECK (mes BETWEEN 1 AND 12),
+  CONSTRAINT chk_eventos_dia_inicial CHECK (dia_inicial IS NULL OR dia_inicial BETWEEN 1 AND 31),
+  CONSTRAINT chk_eventos_dia_final CHECK (dia_final IS NULL OR dia_final BETWEEN 1 AND 31),
+  CONSTRAINT chk_eventos_intervalo CHECK (dia_final IS NULL OR (dia_inicial IS NOT NULL AND dia_final >= dia_inicial)),
+  INDEX idx_eventos_calendar (ano, mes, dia_inicial, ordem_exibicao, id),
+  INDEX idx_eventos_updated_at (updated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS kingdom_pages (

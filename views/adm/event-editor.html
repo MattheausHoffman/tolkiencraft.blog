@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base="/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c120d">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/pages.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/responsive.css">
+  <title>Editor de Evento | TolkienCraft</title>
+</head>
+<body data-page="admin-event-editor" class="admin-page">
+  <header class="site-header" data-site-header></header>
+  <main id="conteudo" class="admin-main">
+    <form class="container event-editor" data-event-editor novalidate>
+      <div class="admin-dashboard__heading">
+        <div>
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/adm/dashboard">Painel</a><span aria-hidden="true">/</span><a href="/adm/eventos">Eventos</a><span aria-hidden="true">/</span><span data-editor-breadcrumb>Novo</span></nav>
+          <p class="eyebrow">CMS TolkienCraft</p>
+          <h1 data-editor-title>Novo Evento</h1>
+          <p class="lead">Cadastre um lembrete simples para o calendário anual.</p>
+        </div>
+        <button class="button button--secondary" type="button" data-logout-button>Sair</button>
+      </div>
+
+      <div class="auth-alert auth-alert--dashboard" data-auth-alert role="alert" aria-live="assertive" hidden></div>
+
+      <section class="admin-form-panel" aria-labelledby="event-data-title">
+        <div class="admin-form-panel__header"><div><p class="eyebrow">Agenda anual</p><h2 id="event-data-title">Dados do Evento</h2></div></div>
+        <div class="admin-form-grid">
+          <div class="form-field form-field--wide">
+            <label for="nome">Nome do Evento</label>
+            <input id="nome" name="nome" maxlength="150" required autocomplete="off">
+            <span class="field-error" data-field-error="nome"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="anoAtual">Ano definido pelo servidor</label>
+            <input id="anoAtual" value="Carregando..." readonly tabindex="-1" data-current-year>
+            <small>Somente Eventos do ano atual podem ser cadastrados.</small>
+          </div>
+
+          <div class="form-field">
+            <label for="mes">Mês</label>
+            <select id="mes" name="mes" required>
+              <option value="">Selecione</option>
+              <option value="1">Janeiro</option>
+              <option value="2">Fevereiro</option>
+              <option value="3">Março</option>
+              <option value="4">Abril</option>
+              <option value="5">Maio</option>
+              <option value="6">Junho</option>
+              <option value="7">Julho</option>
+              <option value="8">Agosto</option>
+              <option value="9">Setembro</option>
+              <option value="10">Outubro</option>
+              <option value="11">Novembro</option>
+              <option value="12">Dezembro</option>
+            </select>
+            <span class="field-error" data-field-error="mes"></span>
+          </div>
+
+          <label class="check-field form-field--wide" for="aDefinir">
+            <input id="aDefinir" name="aDefinir" type="checkbox">
+            <span>Data “A definir”</span>
+          </label>
+
+          <div class="form-field">
+            <label for="diaInicial">Dia Inicial</label>
+            <input id="diaInicial" name="diaInicial" type="number" min="1" max="31" step="1" inputmode="numeric">
+            <span class="field-error" data-field-error="diaInicial"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="diaFinal">Dia Final <small>(opcional)</small></label>
+            <input id="diaFinal" name="diaFinal" type="number" min="1" max="31" step="1" inputmode="numeric">
+            <span class="field-error" data-field-error="diaFinal"></span>
+          </div>
+
+          <div class="form-field form-field--wide">
+            <div class="field-label-row"><label for="descricao">Descrição</label><output for="descricao" data-description-counter>0/25</output></div>
+            <textarea id="descricao" name="descricao" maxlength="25" rows="3" placeholder="Breve descrição do Evento."></textarea>
+            <small>Texto simples com no máximo 25 caracteres.</small>
+            <span class="field-error" data-field-error="descricao"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="ordemExibicao">Ordem de Exibição</label>
+            <input id="ordemExibicao" name="ordemExibicao" type="number" value="0" min="-100000" max="100000" step="1">
+            <small>Usada como desempate entre Eventos do mesmo dia.</small>
+            <span class="field-error" data-field-error="ordemExibicao"></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="event-editor__actions">
+        <a class="button button--secondary" href="/adm/eventos">Cancelar</a>
+        <button class="button" type="submit" data-save-button>Salvar Evento</button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer" data-site-footer></footer>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/adm/cms/event-editor.js"></script>
+</body>
+</html>

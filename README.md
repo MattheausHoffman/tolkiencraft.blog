@@ -1,12 +1,13 @@
 # TolkienCraft.blog
 
-Portal TolkienCraft desenvolvido em HTML5, CSS3 e JavaScript modular, com back-end Node.js/Express, autenticação administrativa, MySQL e CMS completo de publicações.
+Portal TolkienCraft desenvolvido em HTML5, CSS3 e JavaScript modular, com back-end Node.js/Express, autenticação administrativa, MySQL e CMS de publicações, Reinos e Eventos.
 
 ## Recursos principais
 
 - Site público responsivo preservando a identidade visual original.
 - Login administrativo protegido por sessão persistida no MySQL.
 - CRUD completo de publicações.
+- CRUD completo de Eventos anuais, com datas simples, intervalos e opção “A definir”.
 - Publicação imediata e salvamento como rascunho.
 - Pesquisa, filtro por status e ordenação no painel.
 - Editor em blocos sem bibliotecas pesadas.
@@ -82,6 +83,7 @@ docker compose ps
 | Login administrativo | http://localhost:3000/adm/login |
 | Painel administrativo | http://localhost:3000/adm/dashboard |
 | Gerenciar publicações | http://localhost:3000/adm/publicacoes |
+| Gerenciar Eventos | http://localhost:3000/adm/eventos |
 | phpMyAdmin | http://localhost:8080 |
 | Health check | http://localhost:3000/health |
 
@@ -119,9 +121,11 @@ O banco `admin_system` e as tabelas são criados automaticamente na inicializaç
 
 - `admins`: administradores autorizados.
 - `sessions`: sessões autenticadas.
+- `app_migrations`: controle idempotente de migrações de conteúdo.
 - `publications`: metadados, status, SEO, ordem e navegação das publicações.
 - `publication_blocks`: blocos estruturados vinculados às publicações.
 - `reinos`: cadastro e dados canônicos dos Reinos.
+- `eventos`: lembretes do calendário anual, organizados por mês, dia e ordem de exibição.
 - `kingdom_pages`: SEO e auditoria da página individual, em relação 1:1 com o Reino.
 - `kingdom_page_blocks`: blocos estruturados vinculados à página do Reino.
 - `media_files`: arquivos enviados pelo painel.
@@ -134,6 +138,8 @@ As publicações existentes no projeto são migradas automaticamente como dados 
 - Regras Gerais do Servidor.
 
 O processo de seed é idempotente e não duplica publicações já existentes.
+
+Os 24 Eventos antes mockados no front-end são migrados uma única vez para `eventos`. A migração fica registrada em `app_migrations`, portanto Eventos excluídos no painel não reaparecem após reiniciar a aplicação.
 
 ## Editor em blocos
 
@@ -219,6 +225,22 @@ Operações de escrita também exigem token CSRF.
 - Content Security Policy com Helmet.
 - Rotas administrativas protegidas por Auth Guard.
 - Exclusão com confirmação explícita.
+
+## CMS de Eventos
+
+O módulo protegido em `/adm/eventos` permite pesquisar, filtrar, ordenar, criar, editar e excluir Eventos. O ano é sempre obtido da data do servidor e não faz parte do payload controlável pelo administrador. O servidor valida o mês, os limites reais de dias de cada mês, intervalos, descrição com até 25 caracteres e ordem de exibição.
+
+A página `/pages/eventos.html` consome exclusivamente `GET /api/eventos`. Não existem páginas individuais, URLs específicas ou cards clicáveis para Eventos. Somente meses com Eventos são exibidos, e os lembretes são ordenados por Dia Inicial e Ordem de Exibição; datas “A definir” ficam no final do mês.
+
+Rotas administrativas protegidas por sessão:
+
+- `GET /api/admin/eventos`
+- `GET /api/admin/eventos/:id`
+- `POST /api/admin/eventos`
+- `PUT /api/admin/eventos/:id`
+- `DELETE /api/admin/eventos/:id`
+
+As operações de escrita exigem token CSRF. Uma rotina executada ao iniciar a aplicação e a cada meia-noite, pela data local do servidor, remove Eventos que não pertençam ao ano corrente. Assim, a agenda também é limpa corretamente quando a aplicação estava indisponível na virada do ano.
 
 ## Persistência Docker
 

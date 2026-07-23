@@ -12,7 +12,8 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "db:init": "node database/init.js",
-    "check": "node scripts/check-project.js"
+    "check": "node scripts/check-project.js",
+    "test": "node --test"
   },
   "dependencies": {
     "bcrypt": "6.0.0",

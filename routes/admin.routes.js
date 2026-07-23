@@ -45,3 +45,13 @@ adminRouter.get('/reinos/:id/pagina', requireAdmin, (request, response) => {
 adminRouter.get('/reinos/:id/editar', requireAdmin, (request, response) => {
   response.sendFile(path.join(viewsDirectory, 'kingdom-editor.html'));
 });
+
+adminRouter.get('/eventos', requireAdmin, (request, response) => {
+  response.sendFile(path.join(viewsDirectory, 'events.html'));
+});
+adminRouter.get('/eventos/novo', requireAdmin, (request, response) => {
+  response.sendFile(path.join(viewsDirectory, 'event-editor.html'));
+});
+adminRouter.get('/eventos/:id/editar', requireAdmin, (request, response) => {
+  response.sendFile(path.join(viewsDirectory, 'event-editor.html'));
+});

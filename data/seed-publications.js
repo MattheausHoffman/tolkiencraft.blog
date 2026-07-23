@@ -1,4 +1,5 @@
-import { EVENTS } from './events.js';
+import { eventMonthName, formatEventDate } from '../js/event-format.js';
+import { SEED_EVENTS } from './seed-events.js';
 import { RULE_GROUPS } from './rules.js';
 
 const title = (text) => ({ type: 'title', data: { text } });
@@ -133,19 +134,19 @@ const terrainBlocks = [
   ], true)
 ];
 
-const eventsByMonth = EVENTS.reduce((groups, event) => {
-  const current = groups.get(event.month) || [];
+const eventsByMonth = SEED_EVENTS.reduce((groups, event) => {
+  const current = groups.get(event.mes) || [];
   current.push(event);
-  groups.set(event.month, current);
+  groups.set(event.mes, current);
   return groups;
 }, new Map());
 
 const eventBlocks = [];
 for (const [month, events] of eventsByMonth.entries()) {
-  eventBlocks.push(title(month));
+  eventBlocks.push(title(eventMonthName(month)));
   eventBlocks.push(table(
     ['Data', 'Evento', 'Tipo'],
-    events.map((event) => [event.date, event.title, event.type])
+    events.map((event) => [formatEventDate(event), event.nome, event.descricao])
   ));
 }
 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base="/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c120d">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/pages.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/responsive.css">
+  <title>Gerenciar Eventos | TolkienCraft</title>
+</head>
+<body data-page="admin-events" class="admin-page">
+  <header class="site-header" data-site-header></header>
+  <main id="conteudo" class="admin-main">
+    <section class="container admin-dashboard">
+      <div class="admin-dashboard__heading">
+        <div>
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/adm/dashboard">Painel</a><span aria-hidden="true">/</span><span>Eventos</span></nav>
+          <p class="eyebrow">CMS TolkienCraft</p>
+          <h1>Gerenciar Eventos</h1>
+          <p class="lead">Organize os lembretes do calendário de <strong data-current-year>—</strong>.</p>
+        </div>
+        <div class="admin-heading-actions">
+          <a class="button" href="/adm/eventos/novo">Novo Evento</a>
+          <button class="button button--secondary" type="button" data-logout-button>Sair</button>
+        </div>
+      </div>
+
+      <div class="auth-alert auth-alert--dashboard" data-auth-alert role="alert" aria-live="assertive" hidden></div>
+
+      <form class="admin-filters" data-event-filters>
+        <div class="form-field">
+          <label for="event-search">Pesquisar</label>
+          <input id="event-search" type="search" name="search" placeholder="Nome ou descrição">
+        </div>
+        <div class="form-field">
+          <label for="event-month">Mês</label>
+          <select id="event-month" name="month">
+            <option value="">Todos</option>
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="event-sort">Ordenar por</label>
+          <select id="event-sort" name="sort">
+            <option value="calendar">Calendário</option>
+            <option value="updated">Atualização mais recente</option>
+            <option value="order_asc">Ordem de exibição</option>
+            <option value="order_desc">Ordem decrescente</option>
+            <option value="month_desc">Mês decrescente</option>
+            <option value="name_asc">Nome A–Z</option>
+            <option value="name_desc">Nome Z–A</option>
+            <option value="newest">Mais recentes</option>
+            <option value="oldest">Mais antigos</option>
+          </select>
+        </div>
+      </form>
+
+      <section class="admin-list-panel" aria-labelledby="event-list-title">
+        <div class="admin-list-panel__header">
+          <div><p class="eyebrow">Agenda cadastrada</p><h2 id="event-list-title">Eventos</h2></div>
+          <span class="admin-result-count" data-result-count>0 Eventos</span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table admin-table--events">
+            <thead>
+              <tr><th>Nome</th><th>Mês</th><th>Dia</th><th>Descrição</th><th>Ordem</th><th>Editar</th><th>Excluir</th></tr>
+            </thead>
+            <tbody data-event-list><tr><td colspan="7">Carregando Eventos...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <dialog class="confirm-dialog" data-delete-dialog>
+    <form method="dialog" class="confirm-dialog__card">
+      <p class="eyebrow">Confirmação necessária</p>
+      <h2>Excluir Evento?</h2>
+      <p>Esta ação removerá definitivamente <strong data-delete-title></strong>. Deseja continuar?</p>
+      <div class="confirm-dialog__actions">
+        <button class="button button--secondary" value="cancel">Cancelar</button>
+        <button class="button button--danger" value="confirm">Excluir</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer class="footer" data-site-footer></footer>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/adm/cms/events.js"></script>
+</body>
+</html>

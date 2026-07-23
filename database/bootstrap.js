@@ -3,6 +3,7 @@ import mysql from 'mysql2/promise';
 import { env } from '../config/environment.js';
 import { SEED_PUBLICATIONS } from '../data/seed-publications.js';
 import { SEED_KINGDOMS } from '../data/seed-kingdoms.js';
+import { SEED_EVENTS, SEED_EVENTS_YEAR } from '../data/seed-events.js';
 
 function quoteIdentifier(identifier) {
   if (!/^[a-zA-Z0-9_]+$/.test(identifier)) {
@@ -32,6 +33,14 @@ async function createTables(connection) {
       data MEDIUMTEXT COLLATE utf8mb4_bin,
       PRIMARY KEY (session_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+  `);
+
+  await connection.query(`
+    CREATE TABLE IF NOT EXISTS app_migrations (
+      migration_key VARCHAR(190) NOT NULL,
+      executed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (migration_key)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
   `);
 
   await connection.query(`
@@ -103,6 +112,28 @@ async function createTables(connection) {
       UNIQUE KEY uq_reinos_slug (slug),
       KEY idx_reinos_status_order (status, ordem_exibicao, nome),
       KEY idx_reinos_created_at (created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+  `);
+
+  await connection.query(`
+    CREATE TABLE IF NOT EXISTS eventos (
+      id INT NOT NULL AUTO_INCREMENT,
+      nome VARCHAR(150) NOT NULL,
+      descricao VARCHAR(25) NOT NULL DEFAULT '',
+      mes TINYINT UNSIGNED NOT NULL,
+      dia_inicial TINYINT UNSIGNED NULL,
+      dia_final TINYINT UNSIGNED NULL,
+      ano SMALLINT UNSIGNED NOT NULL,
+      ordem_exibicao INT NOT NULL DEFAULT 0,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      KEY idx_eventos_calendar (ano, mes, dia_inicial, ordem_exibicao, id),
+      KEY idx_eventos_updated_at (updated_at),
+      CONSTRAINT chk_eventos_mes CHECK (mes BETWEEN 1 AND 12),
+      CONSTRAINT chk_eventos_dia_inicial CHECK (dia_inicial IS NULL OR dia_inicial BETWEEN 1 AND 31),
+      CONSTRAINT chk_eventos_dia_final CHECK (dia_final IS NULL OR dia_final BETWEEN 1 AND 31),
+      CONSTRAINT chk_eventos_intervalo CHECK (dia_final IS NULL OR (dia_inicial IS NOT NULL AND dia_final >= dia_inicial))
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
   `);
 
@@ -289,6 +320,45 @@ async function seedKingdoms(connection) {
   `);
 }
 
+async function migrateEvents(connection) {
+  const migrationKey = '2026-07-migrate-static-events';
+  const [migrations] = await connection.execute(
+    'SELECT migration_key FROM app_migrations WHERE migration_key = ? LIMIT 1',
+    [migrationKey]
+  );
+  if (migrations.length > 0) return;
+
+  await connection.beginTransaction();
+  try {
+    if (new Date().getFullYear() === SEED_EVENTS_YEAR) {
+      for (const event of SEED_EVENTS) {
+        await connection.execute(`
+          INSERT INTO eventos (
+            nome, descricao, mes, dia_inicial, dia_final, ano, ordem_exibicao
+          ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        `, [
+          event.nome,
+          event.descricao,
+          event.mes,
+          event.diaInicial,
+          event.diaFinal,
+          SEED_EVENTS_YEAR,
+          event.ordemExibicao
+        ]);
+      }
+    }
+
+    await connection.execute(
+      'INSERT INTO app_migrations (migration_key) VALUES (?)',
+      [migrationKey]
+    );
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  }
+}
+
 export async function bootstrapDatabase() {
   const connection = await mysql.createConnection({
     host: env.database.host,
@@ -308,6 +378,7 @@ export async function bootstrapDatabase() {
     const adminId = await seedAdmin(connection);
     await seedPublications(connection, adminId);
     await seedKingdoms(connection);
+    await migrateEvents(connection);
   } finally {
     await connection.end();
   }
