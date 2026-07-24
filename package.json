@@ -2,7 +2,7 @@
   "name": "tolkiencraft.blog",
   "version": "4.0.0",
   "private": true,
-  "description": "Portal TolkienCraft com autenticação administrativa, CMS de publicações e CMS de reinos em Node.js, Express e MySQL.",
+  "description": "Portal TolkienCraft com autenticação administrativa e CMS de publicações, Reinos, Eventos e Regras em Node.js, Express e MySQL.",
   "type": "module",
   "main": "server.js",
   "engines": {

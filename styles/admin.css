@@ -63,3 +63,8 @@
 .admin-table--events{min-width:72rem}.admin-event-date{white-space:nowrap;color:var(--color-primary)}.admin-event-description{width:20rem;font-size:.82rem;line-height:1.45;overflow-wrap:anywhere}
 .event-editor{display:grid;gap:1.5rem}.event-editor .admin-form-panel{max-width:58rem;width:100%;margin-inline:auto}.event-editor__actions{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:flex-end;max-width:58rem;width:100%;margin-inline:auto}
 @media(max-width:48rem){.event-editor__actions{display:grid}.event-editor__actions .button{width:100%}.admin-event-description{width:auto}}
+
+/* CMS de Regras */
+.admin-table--rules{min-width:65rem}.admin-rule-title{min-width:16rem}.admin-rule-title strong,.admin-rule-title small{display:block}.admin-rule-title small{margin-top:.2rem;color:var(--color-muted);font-size:.73rem}
+.rule-editor{display:grid;gap:1.5rem}.rule-editor .admin-form-panel{max-width:64rem;width:100%;margin-inline:auto}.rule-editor__actions{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:flex-end;max-width:64rem;width:100%;margin-inline:auto}.rule-section-editor-list{display:grid;gap:1rem;margin-top:1.25rem}
+@media(max-width:48rem){.rule-editor__actions{display:grid}.rule-editor__actions .button{width:100%}.rule-editor .admin-form-panel__header{align-items:flex-start;flex-direction:column}.rule-editor .admin-form-panel__header .button{width:100%}}

@@ -1,6 +1,6 @@
 import { eventMonthName, formatEventDate } from '../js/event-format.js';
 import { SEED_EVENTS } from './seed-events.js';
-import { RULE_GROUPS } from './rules.js';
+import { SEED_RULES } from './seed-rules.js';
 
 const title = (text) => ({ type: 'title', data: { text } });
 const subtitle = (text) => ({ type: 'subtitle', data: { text } });
@@ -150,7 +150,7 @@ for (const [month, events] of eventsByMonth.entries()) {
   ));
 }
 
-const ruleBlocks = RULE_GROUPS.flatMap((group) => {
+const ruleBlocks = SEED_RULES.flatMap((group) => {
   const blocks = [title(group.title), paragraph(group.summary)];
   for (const section of group.sections) {
     blocks.push(subtitle(section.title));

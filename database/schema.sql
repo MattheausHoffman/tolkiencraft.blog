@@ -118,6 +118,20 @@ CREATE TABLE IF NOT EXISTS eventos (
   INDEX idx_eventos_updated_at (updated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE IF NOT EXISTS regras (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  titulo VARCHAR(180) NOT NULL UNIQUE,
+  slug VARCHAR(190) NOT NULL UNIQUE,
+  descricao VARCHAR(500) NOT NULL,
+  secoes JSON NOT NULL,
+  ordem_exibicao INT NOT NULL DEFAULT 0,
+  status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_regras_status_order (status, ordem_exibicao, titulo),
+  INDEX idx_regras_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE IF NOT EXISTS kingdom_pages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   kingdom_id INT NOT NULL UNIQUE,

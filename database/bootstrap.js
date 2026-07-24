@@ -4,6 +4,8 @@ import { env } from '../config/environment.js';
 import { SEED_PUBLICATIONS } from '../data/seed-publications.js';
 import { SEED_KINGDOMS } from '../data/seed-kingdoms.js';
 import { SEED_EVENTS, SEED_EVENTS_YEAR } from '../data/seed-events.js';
+import { SEED_RULES } from '../data/seed-rules.js';
+import { slugify } from '../utils/slug.js';
 
 function quoteIdentifier(identifier) {
   if (!/^[a-zA-Z0-9_]+$/.test(identifier)) {
@@ -134,6 +136,25 @@ async function createTables(connection) {
       CONSTRAINT chk_eventos_dia_inicial CHECK (dia_inicial IS NULL OR dia_inicial BETWEEN 1 AND 31),
       CONSTRAINT chk_eventos_dia_final CHECK (dia_final IS NULL OR dia_final BETWEEN 1 AND 31),
       CONSTRAINT chk_eventos_intervalo CHECK (dia_final IS NULL OR (dia_inicial IS NOT NULL AND dia_final >= dia_inicial))
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+  `);
+
+  await connection.query(`
+    CREATE TABLE IF NOT EXISTS regras (
+      id INT NOT NULL AUTO_INCREMENT,
+      titulo VARCHAR(180) NOT NULL,
+      slug VARCHAR(190) NOT NULL,
+      descricao VARCHAR(500) NOT NULL,
+      secoes JSON NOT NULL,
+      ordem_exibicao INT NOT NULL DEFAULT 0,
+      status ENUM('active','inactive') NOT NULL DEFAULT 'active',
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY uq_regras_titulo (titulo),
+      UNIQUE KEY uq_regras_slug (slug),
+      KEY idx_regras_status_order (status, ordem_exibicao, titulo),
+      KEY idx_regras_created_at (created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
   `);
 
@@ -359,6 +380,42 @@ async function migrateEvents(connection) {
   }
 }
 
+async function migrateRules(connection) {
+  const migrationKey = '2026-07-migrate-static-rules';
+  const [migrations] = await connection.execute(
+    'SELECT migration_key FROM app_migrations WHERE migration_key = ? LIMIT 1',
+    [migrationKey]
+  );
+  if (migrations.length > 0) return;
+
+  await connection.beginTransaction();
+  try {
+    for (let index = 0; index < SEED_RULES.length; index += 1) {
+      const rule = SEED_RULES[index];
+      await connection.execute(`
+        INSERT INTO regras (
+          titulo, slug, descricao, secoes, ordem_exibicao, status
+        ) VALUES (?, ?, ?, ?, ?, 'active')
+      `, [
+        rule.title,
+        slugify(rule.title),
+        rule.summary,
+        JSON.stringify(rule.sections),
+        index + 1
+      ]);
+    }
+
+    await connection.execute(
+      'INSERT INTO app_migrations (migration_key) VALUES (?)',
+      [migrationKey]
+    );
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  }
+}
+
 export async function bootstrapDatabase() {
   const connection = await mysql.createConnection({
     host: env.database.host,
@@ -379,6 +436,7 @@ export async function bootstrapDatabase() {
     await seedPublications(connection, adminId);
     await seedKingdoms(connection);
     await migrateEvents(connection);
+    await migrateRules(connection);
   } finally {
     await connection.end();
   }

@@ -1,6 +1,6 @@
 # TolkienCraft.blog
 
-Portal TolkienCraft desenvolvido em HTML5, CSS3 e JavaScript modular, com back-end Node.js/Express, autenticação administrativa, MySQL e CMS de publicações, Reinos e Eventos.
+Portal TolkienCraft desenvolvido em HTML5, CSS3 e JavaScript modular, com back-end Node.js/Express, autenticação administrativa, MySQL e CMS de Publicações, Reinos, Eventos e Regras.
 
 ## Recursos principais
 
@@ -8,6 +8,7 @@ Portal TolkienCraft desenvolvido em HTML5, CSS3 e JavaScript modular, com back-e
 - Login administrativo protegido por sessão persistida no MySQL.
 - CRUD completo de publicações.
 - CRUD completo de Eventos anuais, com datas simples, intervalos e opção “A definir”.
+- CRUD completo de Regras com status, ordem, seções e listas.
 - Publicação imediata e salvamento como rascunho.
 - Pesquisa, filtro por status e ordenação no painel.
 - Editor em blocos sem bibliotecas pesadas.
@@ -84,6 +85,7 @@ docker compose ps
 | Painel administrativo | http://localhost:3000/adm/dashboard |
 | Gerenciar publicações | http://localhost:3000/adm/publicacoes |
 | Gerenciar Eventos | http://localhost:3000/adm/eventos |
+| Gerenciar Regras | http://localhost:3000/adm/regras |
 | phpMyAdmin | http://localhost:8080 |
 | Health check | http://localhost:3000/health |
 
@@ -126,6 +128,7 @@ O banco `admin_system` e as tabelas são criados automaticamente na inicializaç
 - `publication_blocks`: blocos estruturados vinculados às publicações.
 - `reinos`: cadastro e dados canônicos dos Reinos.
 - `eventos`: lembretes do calendário anual, organizados por mês, dia e ordem de exibição.
+- `regras`: títulos, slugs, descrições, seções, status e ordem do regulamento público.
 - `kingdom_pages`: SEO e auditoria da página individual, em relação 1:1 com o Reino.
 - `kingdom_page_blocks`: blocos estruturados vinculados à página do Reino.
 - `media_files`: arquivos enviados pelo painel.
@@ -241,6 +244,22 @@ Rotas administrativas protegidas por sessão:
 - `DELETE /api/admin/eventos/:id`
 
 As operações de escrita exigem token CSRF. Uma rotina executada ao iniciar a aplicação e a cada meia-noite, pela data local do servidor, remove Eventos que não pertençam ao ano corrente. Assim, a agenda também é limpa corretamente quando a aplicação estava indisponível na virada do ano.
+
+## CMS de Regras
+
+O módulo protegido em `/adm/regras` permite pesquisar, filtrar por status, ordenar, criar, editar e excluir Regras. Títulos são únicos e geram slugs automaticamente. O editor mantém a descrição e oferece seções reordenáveis com itens de lista, preservando a estrutura visual do accordion original.
+
+A página `/pages/regras.html` consome exclusivamente `GET /api/regras`. Somente Regras ativas são retornadas e sua numeração acompanha `ordem_exibicao`. Se não houver Regra ativa, a página exibe a mensagem “Não há regras cadastradas até o momento.”.
+
+Rotas administrativas protegidas por sessão:
+
+- `GET /api/admin/regras`
+- `GET /api/admin/regras/:id`
+- `POST /api/admin/regras`
+- `PUT /api/admin/regras/:id`
+- `DELETE /api/admin/regras/:id`
+
+As operações de escrita exigem token CSRF. As 15 Regras anteriormente mockadas são migradas uma única vez para o banco, com controle idempotente em `app_migrations`.
 
 ## Persistência Docker
 

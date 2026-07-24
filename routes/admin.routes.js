@@ -55,3 +55,13 @@ adminRouter.get('/eventos/novo', requireAdmin, (request, response) => {
 adminRouter.get('/eventos/:id/editar', requireAdmin, (request, response) => {
   response.sendFile(path.join(viewsDirectory, 'event-editor.html'));
 });
+
+adminRouter.get('/regras', requireAdmin, (request, response) => {
+  response.sendFile(path.join(viewsDirectory, 'rules.html'));
+});
+adminRouter.get('/regras/nova', requireAdmin, (request, response) => {
+  response.sendFile(path.join(viewsDirectory, 'rule-editor.html'));
+});
+adminRouter.get('/regras/:id/editar', requireAdmin, (request, response) => {
+  response.sendFile(path.join(viewsDirectory, 'rule-editor.html'));
+});

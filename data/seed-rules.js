@@ -1,4 +1,4 @@
-export const RULE_GROUPS = [
+export const SEED_RULES = [
   {
     title: 'Construção responsável',
     summary: 'Preserve o mapa, respeite vizinhos e mantenha distância das vilas iniciais.',

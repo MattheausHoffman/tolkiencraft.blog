@@ -29,7 +29,10 @@ export function errorHandler(error, request, response, next) {
     errors = undefined;
   }
 
-  if (error?.code === 'ER_DUP_ENTRY') {
+  if (error?.code === 'ER_DUP_ENTRY' && request.originalUrl.includes('/regras')) {
+    status = 409;
+    message = 'Já existe uma Regra com esse título ou slug.';
+  } else if (error?.code === 'ER_DUP_ENTRY') {
     status = 409;
     message = request.originalUrl.includes('/reinos')
       ? 'Já existe um Reino com esse nome ou slug.'

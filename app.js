@@ -10,8 +10,10 @@ import { publicationRouter } from './routes/publication.routes.js';
 import { adminPublicationApiRouter } from './routes/admin-publication-api.routes.js';
 import { adminKingdomApiRouter } from './routes/admin-kingdom-api.routes.js';
 import { adminEventApiRouter } from './routes/admin-event-api.routes.js';
+import { adminRuleApiRouter } from './routes/admin-rule-api.routes.js';
 import { kingdomRouter } from './routes/kingdom.routes.js';
 import { eventRouter } from './routes/event.routes.js';
+import { ruleRouter } from './routes/rule.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
 import { renderRobots, renderSitemap } from './controllers/seo.controller.js';
 
@@ -64,10 +66,12 @@ export function createApp() {
   app.use('/api/admin', adminPublicationApiRouter);
   app.use('/api/admin', adminKingdomApiRouter);
   app.use('/api/admin', adminEventApiRouter);
+  app.use('/api/admin', adminRuleApiRouter);
   app.use('/adm', adminRouter);
   app.use(publicationRouter);
   app.use(kingdomRouter);
   app.use(eventRouter);
+  app.use(ruleRouter);
 
   app.use('/assets', express.static(path.join(currentDirectory, 'assets'), staticOptions({ immutable: true, maxAge: '7d' })));
   app.use('/styles', express.static(path.join(currentDirectory, 'styles'), staticOptions({ maxAge: '1d' })));

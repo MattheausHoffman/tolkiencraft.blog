@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-base="/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c120d">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/layout.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/pages.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/responsive.css">
+  <title>Editor de Regra | TolkienCraft</title>
+</head>
+<body data-page="admin-rule-editor" class="admin-page">
+  <header class="site-header" data-site-header></header>
+  <main id="conteudo" class="admin-main">
+    <form class="container rule-editor" data-rule-editor novalidate>
+      <div class="admin-dashboard__heading">
+        <div>
+          <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/adm/dashboard">Painel</a><span aria-hidden="true">/</span><a href="/adm/regras">Regras</a><span aria-hidden="true">/</span><span data-editor-breadcrumb>Nova</span></nav>
+          <p class="eyebrow">CMS TolkienCraft</p>
+          <h1 data-editor-title>Nova Regra</h1>
+          <p class="lead">Preencha o resumo e organize as listas exibidas no accordion público.</p>
+        </div>
+        <button class="button button--secondary" type="button" data-logout-button>Sair</button>
+      </div>
+
+      <div class="auth-alert auth-alert--dashboard" data-auth-alert role="alert" aria-live="assertive" hidden></div>
+
+      <section class="admin-form-panel" aria-labelledby="rule-data-title">
+        <div class="admin-form-panel__header"><div><p class="eyebrow">Identificação</p><h2 id="rule-data-title">Dados da Regra</h2></div></div>
+        <div class="admin-form-grid">
+          <div class="form-field form-field--wide">
+            <label for="titulo">Título</label>
+            <input id="titulo" name="titulo" maxlength="180" required autocomplete="off">
+            <span class="field-error" data-field-error="titulo"></span>
+          </div>
+
+          <div class="form-field form-field--wide">
+            <label for="slug">Slug gerado automaticamente</label>
+            <div class="slug-field"><span>/regras/</span><input id="slug" name="slug" readonly tabindex="-1"></div>
+            <small>O slug fica armazenado para futuras expansões e não cria uma página individual.</small>
+          </div>
+
+          <div class="form-field">
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+              <option value="active">Ativa</option>
+              <option value="inactive">Inativa</option>
+            </select>
+            <span class="field-error" data-field-error="status"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="ordemExibicao">Ordem de Exibição</label>
+            <input id="ordemExibicao" name="ordemExibicao" type="number" value="0" min="-100000" max="100000" step="1">
+            <span class="field-error" data-field-error="ordemExibicao"></span>
+          </div>
+
+          <div class="form-field form-field--wide">
+            <div class="field-label-row"><label for="descricao">Descrição</label><output for="descricao" data-description-counter>0/500</output></div>
+            <textarea id="descricao" name="descricao" maxlength="500" rows="5" required></textarea>
+            <small>Resumo obrigatório exibido ao abrir a Regra. Quebras de linha são preservadas.</small>
+            <span class="field-error" data-field-error="descricao"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-form-panel" aria-labelledby="rule-sections-title">
+        <div class="admin-form-panel__header">
+          <div><p class="eyebrow">Conteúdo estruturado</p><h2 id="rule-sections-title">Seções e listas</h2></div>
+          <button class="button button--secondary" type="button" data-add-rule-section>Adicionar Seção</button>
+        </div>
+        <p class="block-help">Cada linha do campo de itens será exibida como um item da lista pública. As seções podem ser reordenadas.</p>
+        <span class="field-error" data-field-error="sections"></span>
+        <div class="rule-section-editor-list" data-rule-sections></div>
+      </section>
+
+      <div class="rule-editor__actions">
+        <a class="button button--secondary" href="/adm/regras">Cancelar</a>
+        <button class="button" type="submit" data-save-button>Salvar Regra</button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer" data-site-footer></footer>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/adm/cms/rule-editor.js"></script>
+</body>
+</html>
