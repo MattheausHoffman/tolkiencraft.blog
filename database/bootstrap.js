@@ -1,6 +1,9 @@
 import bcrypt from 'bcrypt';
 import mysql from 'mysql2/promise';
-import { env } from '../config/environment.js';
+import {
+  createDatabaseConnectionOptions,
+  env
+} from '../config/environment.js';
 import { SEED_PUBLICATIONS } from '../data/seed-publications.js';
 import { SEED_KINGDOMS } from '../data/seed-kingdoms.js';
 import { SEED_EVENTS, SEED_EVENTS_YEAR } from '../data/seed-events.js';
@@ -416,21 +419,39 @@ async function migrateRules(connection) {
   }
 }
 
-export async function bootstrapDatabase() {
-  const connection = await mysql.createConnection({
-    host: env.database.host,
-    port: env.database.port,
-    user: env.database.user,
-    password: env.database.password,
-    charset: 'utf8mb4'
-  });
-
+async function connectToConfiguredDatabase() {
   try {
+    return await mysql.createConnection({
+      ...createDatabaseConnectionOptions(env.database),
+      charset: 'utf8mb4'
+    });
+  } catch (error) {
+    if (error.code !== 'ER_BAD_DB_ERROR') throw error;
+  }
+
+  let connection;
+  try {
+    connection = await mysql.createConnection({
+      ...createDatabaseConnectionOptions(env.database, { includeDatabase: false }),
+      charset: 'utf8mb4'
+    });
+
     const databaseName = quoteIdentifier(env.database.name);
     await connection.query(
       `CREATE DATABASE IF NOT EXISTS ${databaseName} CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci`
     );
     await connection.changeUser({ database: env.database.name });
+    return connection;
+  } catch (error) {
+    if (connection) await connection.end().catch(() => {});
+    throw error;
+  }
+}
+
+export async function bootstrapDatabase() {
+  const connection = await connectToConfiguredDatabase();
+
+  try {
     await createTables(connection);
     const adminId = await seedAdmin(connection);
     await seedPublications(connection, adminId);

@@ -297,6 +297,32 @@ npm start
 
 Configure as variáveis a partir de `.env.example` e garanta que o usuário informado tenha permissão para criar e utilizar o banco.
 
+### Prioridade da configuração MySQL
+
+A mesma configuração é utilizada pelo bootstrap, pelo pool da aplicação e pelo armazenamento de sessões. A resolução ocorre nesta ordem:
+
+1. `DATABASE_URL`;
+2. `MYSQL_URL`;
+3. variáveis `DB_*`;
+4. variáveis `MYSQL*` nativas do Railway;
+5. padrões locais, somente quando `NODE_ENV` não é `production`.
+
+Quando são utilizadas variáveis individuais, os pares aceitos são:
+
+| Projeto | Railway |
+|---|---|
+| `DB_HOST` | `MYSQLHOST` |
+| `DB_PORT` | `MYSQLPORT` |
+| `DB_USER` | `MYSQLUSER` |
+| `DB_PASSWORD` | `MYSQLPASSWORD` |
+| `DB_NAME` | `MYSQLDATABASE` |
+
+Em produção, host, usuário, senha e banco são obrigatórios. `localhost`, `127.0.0.1` e `::1` são rejeitados como host. No desenvolvimento, permanecem disponíveis os padrões `127.0.0.1:3306`, usuário `root` e banco `admin_system`.
+
+Se o provedor exigir TLS, defina `DB_SSL=true` (ou `MYSQL_SSL=true`). Para uma autoridade certificadora privada, informe o conteúdo PEM em `DB_SSL_CA` ou `MYSQL_SSL_CA`, usando `\n` para quebras de linha. A validação do certificado não é desabilitada.
+
+Na inicialização, erros transitórios de rede são tentados no máximo quatro vezes, com intervalos de 1, 3 e 6 segundos. Erros permanentes, como configuração ausente ou autenticação recusada, encerram imediatamente o processo.
+
 ## Validação do código
 
 ```bash
@@ -317,6 +343,68 @@ Antes da implantação:
 6. Defina `SESSION_COOKIE_SECURE=true`.
 7. Não exponha o phpMyAdmin publicamente.
 8. Armazene segredos em variáveis de ambiente, nunca no repositório.
+
+### Deploy no Railway com MySQL
+
+O projeto deve conter dois serviços no mesmo ambiente:
+
+```text
+Projeto Railway
+├── Aplicação Node.js
+└── MySQL
+```
+
+No serviço **MySQL**, confira na aba **Variables** os nomes que o Railway realmente disponibilizou. O template oficial fornece `MYSQLHOST`, `MYSQLPORT`, `MYSQLUSER`, `MYSQLPASSWORD`, `MYSQLDATABASE` e `MYSQL_URL`.
+
+Depois, no serviço da **aplicação Node.js**, abra **Variables** e crie uma das configurações abaixo. Substitua `MySQL` pelo nome exato do serviço de banco; o autocomplete do painel confirma a referência.
+
+Opção recomendada, com URL completa:
+
+```text
+MYSQL_URL=${{MySQL.MYSQL_URL}}
+```
+
+Também é possível expor essa referência com o nome aceito pelo projeto:
+
+```text
+DATABASE_URL=${{MySQL.MYSQL_URL}}
+```
+
+Não defina simultaneamente `DATABASE_URL` para outro tipo de banco, pois ela possui a maior prioridade.
+
+Alternativa com variáveis individuais:
+
+```text
+DB_HOST=${{MySQL.MYSQLHOST}}
+DB_PORT=${{MySQL.MYSQLPORT}}
+DB_USER=${{MySQL.MYSQLUSER}}
+DB_PASSWORD=${{MySQL.MYSQLPASSWORD}}
+DB_NAME=${{MySQL.MYSQLDATABASE}}
+```
+
+Defina ainda, no serviço da aplicação:
+
+```text
+NODE_ENV=production
+SESSION_SECRET=<valor aleatório com pelo menos 32 caracteres>
+SITE_URL=https://<domínio definitivo>
+SESSION_COOKIE_SECURE=true
+```
+
+O Railway injeta `PORT`; a aplicação lê esse valor e escuta em `0.0.0.0`. Depois de salvar as variáveis, revise as mudanças pendentes no painel e faça um novo deploy.
+
+Para um MySQL externo ao Railway, use `DATABASE_URL`/`MYSQL_URL` fornecida pelo provedor ou configure `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` e `DB_NAME` com os valores reais. Nunca use `localhost` ou `127.0.0.1` em produção. Ative as opções de SSL descritas acima quando exigidas pelo provedor.
+
+Logs esperados em uma inicialização válida:
+
+```text
+Ambiente: production
+Banco configurado: sim
+Host do banco: configurado
+Porta do banco: 3306
+Banco de dados inicializado e conexão verificada.
+Servidor iniciado na porta <PORT>.
+```
 
 
 ## CMS de Reinos

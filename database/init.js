@@ -1,12 +1,12 @@
-import { bootstrapDatabase } from './bootstrap.js';
-import { databasePool, verifyDatabaseConnection } from './connection.js';
+import { databasePool } from './connection.js';
+import { formatDatabaseError } from './errors.js';
+import { initializeDatabase } from './startup.js';
 
 try {
-  await bootstrapDatabase();
-  await verifyDatabaseConnection();
+  await initializeDatabase();
   console.info('Banco de dados inicializado com sucesso.');
 } catch (error) {
-  console.error('Falha ao inicializar o banco de dados:', error.message);
+  console.error(`Falha ao inicializar o banco de dados: ${formatDatabaseError(error)}`);
   process.exitCode = 1;
 } finally {
   await databasePool.end();

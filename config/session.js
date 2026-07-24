@@ -1,16 +1,16 @@
 import session from 'express-session';
 import MySQLStoreFactory from 'express-mysql-session';
-import { env } from './environment.js';
+import {
+  createDatabaseConnectionOptions,
+  env
+} from './environment.js';
+import { formatDatabaseError } from '../database/errors.js';
 
 const MySQLStore = MySQLStoreFactory(session);
 
 export function createSessionMiddleware() {
   const store = new MySQLStore({
-    host: env.database.host,
-    port: env.database.port,
-    user: env.database.user,
-    password: env.database.password,
-    database: env.database.name,
+    ...createDatabaseConnectionOptions(env.database),
     createDatabaseTable: false,
     clearExpired: true,
     checkExpirationInterval: 15 * 60 * 1000,
@@ -26,7 +26,7 @@ export function createSessionMiddleware() {
   });
 
   store.on('error', (error) => {
-    console.error('Erro no armazenamento de sessões:', error);
+    console.error(`Erro no armazenamento de sessões: ${formatDatabaseError(error)}`);
   });
 
   return session({
